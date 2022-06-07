@@ -1,5 +1,6 @@
 .sidebar {
-    position: relative;
+    position: sticky;
+    top: 0;
     height: 100vh;
     background-color: rgb(30, 30, 30);
     width: 250px;
@@ -14,10 +15,12 @@
 .label {
     color: white;
     margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .collapsed {
-    width: 4.5rem;
+    width: 77px;
+    min-width: 72px;
 }
 
 .nav-link:hover {

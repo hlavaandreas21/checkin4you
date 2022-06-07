@@ -1,0 +1,16 @@
+﻿@page "/checkin"
+
+<div class="d-flex flex-column p-5 vh-100">
+    <div class="h-50 d-flex align-items-center justify-content-center">
+        <h1>Haben Sie eine Buchungsnummer?</h1>
+    </div>
+    <div class="h-50 d-flex align-items-center justify-content-center">
+        <RadzenButton Style="background-color: #40A535; height: 50%; width: 25%;" Click="@NavigateToWithReservationPage">
+            JA, ich habe eine Buchungsnummer!
+        </RadzenButton>
+        <div style="width: 20%"></div>
+        <RadzenButton Style="background-color: #9e2b25; height: 50%; width: 25%;" Click="@NavigateToWithoutReservationPage">
+            NEIN, ich habe keine Buchungsnummer!
+        </RadzenButton>
+    </div>
+</div>

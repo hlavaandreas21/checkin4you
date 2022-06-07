@@ -18,8 +18,18 @@ namespace checkin4you.Server.DataAccess
         public virtual DbSet<TblItem> TblItems { get; set; } = null!;
         public virtual DbSet<TblReservation> TblReservations { get; set; } = null!;
         public virtual DbSet<TblReservationGuest> TblReservationGuests { get; set; } = null!;
+        public virtual DbSet<TblReservationItem> TblReservationItems { get; set; } = null!;
         public virtual DbSet<TblReservationsExt> TblReservationsExts { get; set; } = null!;
         public virtual DbSet<TblReservationsPartial> TblReservationsPartials { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=AidaX_kleiner_Italiener;Trusted_Connection=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -435,6 +445,144 @@ namespace checkin4you.Server.DataAccess
                 entity.Property(e => e.VehicleNo).HasMaxLength(80);
 
                 entity.Property(e => e.ZipCode).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<TblReservationItem>(entity =>
+            {
+                entity.HasKey(e => e.IdreservationItem)
+                    .HasName("PK__tblReservationIt__1A14E395");
+
+                entity.ToTable("tblReservationItems");
+
+                entity.HasIndex(e => e.BookingDate, "IX_tblReservationItems_BookingDate");
+
+                entity.HasIndex(e => e.BookingDateEnd, "IX_tblReservationItems_BookingDateEnd")
+                    .HasFillFactor(25);
+
+                entity.HasIndex(e => e.IdcateringGroup, "IX_tblReservationItems_IDCateringGroup");
+
+                entity.HasIndex(e => e.Iditem, "IX_tblReservationItems_IDItem");
+
+                entity.HasIndex(e => e.IdmainReservationItem, "IX_tblReservationItems_IDMainReservationItem")
+                    .HasFillFactor(25);
+
+                entity.HasIndex(e => e.IdpriceType, "IX_tblReservationItems_IDPriceType");
+
+                entity.HasIndex(e => e.Idrate, "IX_tblReservationItems_IDRate");
+
+                entity.HasIndex(e => e.Idreservation, "IX_tblReservationItems_IDReservation");
+
+                entity.HasIndex(e => e.IdreservationGuest, "IX_tblReservationItems_IDReservationGuest")
+                    .HasFillFactor(25);
+
+                entity.HasIndex(e => e.IdreservationPartial, "IX_tblReservationItems_IDReservationPartial");
+
+                entity.HasIndex(e => e.Idresource, "IX_tblReservationItems_IDResource")
+                    .HasFillFactor(25);
+
+                entity.HasIndex(e => e.IdsubResource, "IX_tblReservationItems_IDSubResource")
+                    .HasFillFactor(25);
+
+                entity.HasIndex(e => e.ResItemType, "IX_tblReservationItems_ResItemType")
+                    .HasFillFactor(25);
+
+                entity.HasIndex(e => e.TimeFrom, "IX_tblReservationItems_TimeFrom")
+                    .HasFillFactor(25);
+
+                entity.HasIndex(e => e.TimeTo, "IX_tblReservationItems_TimeTo")
+                    .HasFillFactor(25);
+
+                entity.HasIndex(e => e.Tstamp, "UIX_tblReservationItems_TStamp")
+                    .IsUnique();
+
+                entity.Property(e => e.IdreservationItem)
+                    .HasColumnName("IDReservationItem")
+                    .HasDefaultValueSql("(null)");
+
+                entity.Property(e => e.BookingDate).HasColumnType("datetime");
+
+                entity.Property(e => e.BookingDateEnd).HasColumnType("datetime");
+
+                entity.Property(e => e.BookingState)
+                    .HasMaxLength(2)
+                    .IsFixedLength();
+
+                entity.Property(e => e.BookingText).HasMaxLength(100);
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.Comment).HasMaxLength(300);
+
+                entity.Property(e => e.IdcateringGroup).HasColumnName("IDCateringGroup");
+
+                entity.Property(e => e.IdfixBooking).HasColumnName("IDFixBooking");
+
+                entity.Property(e => e.IdinvoiceCarrier).HasColumnName("IDInvoiceCarrier");
+
+                entity.Property(e => e.Iditem).HasColumnName("IDItem");
+
+                entity.Property(e => e.IditemDetail).HasColumnName("IDItemDetail");
+
+                entity.Property(e => e.IdmainReservationItem).HasColumnName("IDMainReservationItem");
+
+                entity.Property(e => e.IdpriceType).HasColumnName("IDPriceType");
+
+                entity.Property(e => e.Idrate).HasColumnName("IDRate");
+
+                entity.Property(e => e.IdresItemStorno).HasColumnName("IDResItemStorno");
+
+                entity.Property(e => e.Idreservation).HasColumnName("IDReservation");
+
+                entity.Property(e => e.IdreservationGuest).HasColumnName("IDReservationGuest");
+
+                entity.Property(e => e.IdreservationPartial).HasColumnName("IDReservationPartial");
+
+                entity.Property(e => e.Idresource).HasColumnName("IDResource");
+
+                entity.Property(e => e.IdresourceImage).HasColumnName("IDResourceImage");
+
+                entity.Property(e => e.IdseatingType).HasColumnName("IDSeatingType");
+
+                entity.Property(e => e.IdsubResource).HasColumnName("IDSubResource");
+
+                entity.Property(e => e.Le)
+                    .HasColumnType("datetime")
+                    .HasColumnName("LE");
+
+                entity.Property(e => e.Lefrom)
+                    .HasMaxLength(30)
+                    .HasColumnName("LEFrom");
+
+                entity.Property(e => e.Price).HasColumnType("money");
+
+                entity.Property(e => e.PriceNet).HasColumnType("money");
+
+                entity.Property(e => e.Quantity).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.RebateAmount).HasColumnType("money");
+
+                entity.Property(e => e.RebateAmountNet).HasColumnType("money");
+
+                entity.Property(e => e.RebatePercent).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.RebateText).HasMaxLength(100);
+
+                entity.Property(e => e.ResItemType)
+                    .HasMaxLength(2)
+                    .IsFixedLength();
+
+                entity.Property(e => e.TimeFrom).HasColumnType("datetime");
+
+                entity.Property(e => e.TimeTo).HasColumnType("datetime");
+
+                entity.Property(e => e.Tstamp)
+                    .IsRowVersion()
+                    .IsConcurrencyToken()
+                    .HasColumnName("TStamp");
+
+                entity.Property(e => e.VariantCode).HasMaxLength(50);
+
+                entity.Property(e => e.VariantSubCode).HasMaxLength(50);
             });
 
             modelBuilder.Entity<TblReservationsExt>(entity =>
