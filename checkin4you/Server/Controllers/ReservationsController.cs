@@ -14,59 +14,46 @@ namespace checkin4you.Server.Controllers
         public ReservationsController(AidaX_kleiner_ItalienerContext context)
         {
             _context = context;
-        }
-
-        [HttpGet]
-        public IEnumerable<TblReservation> GetAllReservations() => _context.TblReservations.ToList();
-        
+        }        
 
         [HttpGet("today")]
-        public IEnumerable<ReservationDTO> GetAllReservationsForToday()
+        public IEnumerable<(string idReservation, string resText)> GetAllReservationsForToday()
         {
             //DateTime today = DateTime.Today;
 
-            DateTime today = new(2022, 6, 30);
+            DateTime today = new(2021, 8, 7);
 
 
             var tblReservations = _context.TblReservations
                 .Where(r => r.ArrivalDate.Value.DayOfYear == today.DayOfYear && 
-                                                                      r.ArrivalDate.Value.Year == today.Year &&
-                                                                      r.StornoDate == null)
+                            r.ArrivalDate.Value.Year == today.Year &&
+                            r.StornoDate == null)
                 .ToList();
 
-            List<(string resId, string name1, string name2)> possibilities = new();
+            List<(string idReservation, string resText)> possibilities = new();
 
             foreach (var res in tblReservations)
             {
-                var tblGuest = _context.TblGuests.Single(g => g.Idguest.ToString() == res.Idguest.ToString());
-                if (tblGuest != null)
-                {
-                    (string resId, string name1, string name2) possibility = (res.Idreservation.ToString(), tblGuest.Name1, tblGuest.Name2);
+                (string idReservation, string resText) possibility = (res.Idreservation.ToString(), res.ResText);
 
-                    possibilities.Add(possibility);
-                }
+                possibilities.Add(possibility);
             }
 
-            possibilities.Distinct();
-
-            ReservationDTO reservation = new()
-            {
-                Idreservations = new(),
-                ExternalResIds = new(),
-                IdRooms = new(),
-                ItemCodes = new(),
-                Guests = new()
-            };
-
-            List<ReservationDTO> reservations = new();
-
-            return reservations;
+            return possibilities;
         }
 
-        [HttpGet("{externalReservationId}")]
+        [HttpGet("byIdReservation/{idReservations}")]
+        public ReservationDTO GetReservationsByIdReservation(string idReservations)
+        {
+            string[] ids = idReservations.Split("&");
+
+            return null;
+        }
+
+        [HttpGet("byExternalResId/{externalReservationId}")]
         public ReservationDTO GetReservationByReservationId(string externalReservationId)
         {
-            DateTime date = new(2022, 1, 22);
+            DateTime date = new();
 
             ReservationDTO reservationFinal = new(){
                 Idreservations = new(),
@@ -145,8 +132,22 @@ namespace checkin4you.Server.Controllers
                 Console.WriteLine(ex.Message);
             }
 
+            if (reservationFinal.Idreservations != null && reservationFinal.Idreservations.Any() &&
+                reservationFinal.ExternalResIds != null && reservationFinal.ExternalResIds.Any() &&
+                reservationFinal.ArrivalDate != null &&
+                reservationFinal.DepartureDate != null &&
+                reservationFinal.IdRooms != null && reservationFinal.IdRooms.Any() &&
+                reservationFinal.ItemCodes != null && reservationFinal.ItemCodes.Any() &&
+                reservationFinal.Guests != null && reservationFinal.Guests.Any())
+            {
+                reservationFinal.IsComplete = true;
+            }
+            else
+            {
+                reservationFinal.IsComplete = false;
+            }
+
             return reservationFinal;
         }
-
     }
 }

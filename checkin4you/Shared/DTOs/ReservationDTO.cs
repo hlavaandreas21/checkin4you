@@ -9,5 +9,6 @@
         public List<string>? IdRooms { get; set; }
         public List<string>? ItemCodes { get; set; }
         public List<GuestDTO>? Guests { get; set; }
+        public bool IsComplete { get; set; }
     }
 }

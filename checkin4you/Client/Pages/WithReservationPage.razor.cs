@@ -22,9 +22,11 @@ namespace checkin4you.Client.Pages
 
         private bool ShowSpinner { get; set; } = false;
 
+        private bool ShowInvalidMessage { get; set; } = false;
+
         private string DisplayNoneCssClass = "";
 
-        public WithReservationPage() {}
+        public WithReservationPage() { }
 
         public WithReservationPage(IReservationService reservationService)
         {
@@ -50,6 +52,7 @@ namespace checkin4you.Client.Pages
                 await Task.Delay(500);
 
                 Reservation = await ReservationService.GetReservationByReservationIdAsync(value);
+                if (!Reservation.IsComplete) Reservation = null;
 
                 ShowSpinner = false;
 
@@ -57,7 +60,7 @@ namespace checkin4you.Client.Pages
 
                 ReservationsLoaded = true;
 
-                if (Reservation.Idreservations != null && Reservation.Idreservations.Any()) DisplayNoneCssClass = "d-none";
+                if (Reservation != null) DisplayNoneCssClass = "d-none";
             }
 
             await InvokeAsync(StateHasChanged);
@@ -76,7 +79,7 @@ namespace checkin4you.Client.Pages
                 CityName = "",
                 IdState = "",
                 StateName = "",
-                Birthdate = new(),
+                Birthdate = null,
                 Email = ""
             });
 
@@ -86,6 +89,46 @@ namespace checkin4you.Client.Pages
         private void Cancel()
         {
             NavigationManager.NavigateTo("/home");
+        }
+
+        private void TryCheckIn()
+        {
+            var allGuestsValid = IsMainGuestComplete(Reservation.Guests.First());
+            
+            foreach (var guest in Reservation.Guests.Skip(1))
+            {
+                var isComplete = IsAdditionalGuestComplete(guest);
+                if (!isComplete) allGuestsValid = false;
+            }
+
+            if (allGuestsValid) NavigationManager.NavigateTo("/checkedIn");
+            else ShowInvalidMessage = true;
+        }
+
+        private static bool IsMainGuestComplete(GuestDTO guest)
+        {
+            if (!string.IsNullOrEmpty(guest.Name1) &&
+                !string.IsNullOrEmpty(guest.Name2) &&
+                !string.IsNullOrEmpty(guest.Street) &&
+                !string.IsNullOrEmpty(guest.ZipCode) &&
+                !string.IsNullOrEmpty(guest.CityName) &&
+                !string.IsNullOrEmpty(guest.StateName) &&
+                guest.Birthdate != null && guest.Birthdate > new DateTime())
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        private static bool IsAdditionalGuestComplete(GuestDTO guest)
+        {
+            if (!string.IsNullOrEmpty(guest.Name1) &&
+                !string.IsNullOrEmpty(guest.Name2) &&
+                guest.Birthdate != null && guest.Birthdate > new DateTime())
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }

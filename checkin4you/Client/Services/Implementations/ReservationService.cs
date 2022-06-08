@@ -18,6 +18,6 @@ namespace checkin4you.Client.Services.Implementations
             => await _httpClient.GetFromJsonAsync<IEnumerable<ReservationDTO>>("api/reservations/today");
 
         public async Task<ReservationDTO> GetReservationByReservationIdAsync(string reservationId) 
-            => await _httpClient.GetFromJsonAsync<ReservationDTO>("api/reservations/" + reservationId);
+            => await _httpClient.GetFromJsonAsync<ReservationDTO>("api/reservations/byExternalResId/" + reservationId);
     }
 }
