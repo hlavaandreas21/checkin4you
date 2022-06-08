@@ -46,7 +46,7 @@ namespace checkin4you.Server.Controllers
         }
 
         [HttpGet("byIdReservations/{idReservations}")]
-        public ReservationDTO GetReservationsByIdReservations(string idReservations)
+        public ReservationDTO GetReservationByIdReservations(string idReservations)
         {
             string[] ids = idReservations.Split("&");
 
