@@ -102,7 +102,7 @@
                     Zurück zur Startseite!
                 </RadzenButton>
             </div>
-            @if (ReservationsLoaded)
+            @if (ReservationsLoaded && Reservation != null)
             {
                 <span class="mt-2">Pflichtfelder sind mit einem * markiert.</span>
             }

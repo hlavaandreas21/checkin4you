@@ -4,7 +4,8 @@ namespace checkin4you.Client.Services.Interfaces
 {
     public interface IReservationService
     {
-        Task<IEnumerable<ReservationDTO>> GetAllReservationsForToday();
-        Task<ReservationDTO> GetReservationByReservationIdAsync(string reservationId);
+        Task<IEnumerable<PossibleReservation>> GetAllReservationsForTodayAsync();
+        Task<ReservationDTO> GetReservationByIdReservationsAsync(string idReservations);
+        Task<ReservationDTO> GetReservationByExternalResIdAsync(string externalResId);
     }
 }

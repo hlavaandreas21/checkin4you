@@ -1,6 +1,5 @@
 ﻿using checkin4you.Server.DataAccess;
 using checkin4you.Shared.DTOs;
-using checkin4you.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace checkin4you.Server.Controllers
@@ -17,7 +16,7 @@ namespace checkin4you.Server.Controllers
         }        
 
         [HttpGet("today")]
-        public IEnumerable<(string idReservation, string resText)> GetAllReservationsForToday()
+        public IEnumerable<PossibleReservation> GetAllReservationsForToday()
         {
             //DateTime today = DateTime.Today;
 
@@ -30,11 +29,15 @@ namespace checkin4you.Server.Controllers
                             r.StornoDate == null)
                 .ToList();
 
-            List<(string idReservation, string resText)> possibilities = new();
+            List<PossibleReservation> possibilities = new();
 
             foreach (var res in tblReservations)
             {
-                (string idReservation, string resText) possibility = (res.Idreservation.ToString(), res.ResText);
+                PossibleReservation possibility = new()
+                {
+                    IdReservation = res.Idreservation.ToString(),
+                    ResText = res.ResText
+                };
 
                 possibilities.Add(possibility);
             }
@@ -42,18 +45,18 @@ namespace checkin4you.Server.Controllers
             return possibilities;
         }
 
-        [HttpGet("byIdReservation/{idReservations}")]
-        public ReservationDTO GetReservationsByIdReservation(string idReservations)
+        [HttpGet("byIdReservations/{idReservations}")]
+        public ReservationDTO GetReservationsByIdReservations(string idReservations)
         {
             string[] ids = idReservations.Split("&");
 
-            return null;
+            return new ReservationDTO();
         }
 
         [HttpGet("byExternalResId/{externalReservationId}")]
         public ReservationDTO GetReservationByReservationId(string externalReservationId)
         {
-            DateTime date = new();
+            DateTime date = new(2021,8,7);
 
             ReservationDTO reservationFinal = new(){
                 Idreservations = new(),
@@ -79,7 +82,7 @@ namespace checkin4you.Server.Controllers
                     var tblReservation = _context.TblReservations.Single(r => r.Idreservation.ToString() == reservation.Idreservation.ToString());
                     if (tblReservation != null)
                     {
-                        if (tblReservation.StornoDate != null || !(tblReservation.ArrivalDate.Value.DayOfYear == date.DayOfYear && tblReservation.ArrivalDate.Value.Year == date.Year))
+                        if (tblReservation.StornoDate != null || !(tblReservation.ArrivalDate?.DayOfYear == date.DayOfYear && tblReservation.ArrivalDate.Value.Year == date.Year))
                         {
                             reservationsToDeleteIds.Add(tblReservation.Idreservation.ToString().ToUpper());
                             continue;

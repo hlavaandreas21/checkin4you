@@ -16,7 +16,7 @@ namespace checkin4you.Client.Pages
         [Inject]
         private IJSRuntime JSRuntime { get; set; } = default!;
 
-        ReservationDTO Reservation { get; set; }
+        ReservationDTO? Reservation { get; set; }
 
         private bool ReservationsLoaded { get; set; } = false;
 
@@ -51,7 +51,7 @@ namespace checkin4you.Client.Pages
 
                 await Task.Delay(500);
 
-                Reservation = await ReservationService.GetReservationByReservationIdAsync(value);
+                Reservation = await ReservationService.GetReservationByExternalResIdAsync(value);
                 if (!Reservation.IsComplete) Reservation = null;
 
                 ShowSpinner = false;
