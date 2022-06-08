@@ -97,27 +97,28 @@
                     <span>Bitte geben Sie eine gültige Buchungsnummer ein!</span>
                 </RadzenCard>
             }
-            <div class="@DisplayNoneCssClass mt-4">
-                <RadzenButton Style="background-color: #9e2b25; height: 100%; width: 100%" Click="@Cancel" class="p-4">
-                    Zurück zur Startseite!
-                </RadzenButton>
-            </div>
             @if (ReservationsLoaded && Reservation != null)
             {
                 <span class="mt-2">Pflichtfelder sind mit einem * markiert.</span>
             }
+            <div class="@DisplayNoneCssClass">
+
+                <RadzenCard class="mt-4">
+                    <h1>Benötigen Sie Hilfe?</h1>
+                    <span>Gerne helfen Ihnen unserer Mitarbeiter im Restaurant weiter oder Sie erreichen uns unter +43 7723 20614</span>
+                </RadzenCard>
+            </div>
         </div>
         
-        <div class="@DisplayNoneCssClass">
+        <div class="d-flex flex-column @DisplayNoneCssClass">
             <RadzenCard Style="background-color: #9e2b25; color: white; height: fit-content; min-width: 410px">
                 <h1>Wo ist meine Buchungsnummer?</h1>
                 <p>Als Sie Ihren Aufenthalt gebucht haben wurde Ihnen Ihre Buchungsnummer von Ihrem Reiseanbieter per Mail zugesandt.</p>
                 <p class="mt-2">Die Buchungsnummer besteht aus 10 Ziffern.</p>
             </RadzenCard>
-            <RadzenCard class="mt-4">
-                <h1>Benötigen Sie Hilfe?</h1>
-                <span>Gerne helfen Ihnen unserer Mitarbeiter im Restaurant weiter oder Sie erreichen uns unter +43 7723 20614</span>
-            </RadzenCard>
+            <RadzenButton Style="background-color: #9e2b25; height: 100%; width: 100%" Click="@Cancel" class="p-4 mt-4">
+                Zurück zur Startseite!
+            </RadzenButton>
         </div>
     </div>
 </div>

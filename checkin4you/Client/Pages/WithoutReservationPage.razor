@@ -97,15 +97,17 @@
                 </RadzenCard>
             }
             <div class="d-flex @DisplayNoneCssClass mt-4">
-                <RadzenButton Style="background-color: #9e2b25; height: 100%; width: 25%" Click="@Cancel" class="p-4 me-4">
-                    Zurück zur Startseite!
-                </RadzenButton>
-                <div class="@DisplayNoneCssClass w-75">
-                    <RadzenCard>
+                
+                <div class="d-flex w-100 @DisplayNoneCssClass">
+                    <RadzenCard class="w-75 me-4">
                         <h1>Benötigen Sie Hilfe?</h1>
                         <span>Gerne helfen Ihnen unserer Mitarbeiter im Restaurant weiter oder Sie erreichen uns unter +43 7723 20614</span>
                     </RadzenCard>
+                    <RadzenButton Style="background-color: #9e2b25; height: 100%; width: 25%" Click="@Cancel" class="p-4 w-25 h-100">
+                        Zurück zur Startseite!
+                    </RadzenButton>
                 </div>
+                
             </div>
             @if (ReservationsLoaded && Reservation != null)
             {
