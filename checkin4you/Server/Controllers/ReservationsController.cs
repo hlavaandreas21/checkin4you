@@ -23,31 +23,40 @@ namespace checkin4you.Server.Controllers
         [HttpGet("today")]
         public IEnumerable<ReservationDTO> GetAllReservationsForToday()
         {
-            DateTime today = new();
+            //DateTime today = DateTime.Today;
 
-            DateTime date = new(2022, 6, 30);
+            DateTime today = new(2022, 6, 30);
 
-            /*var reservations = _context.TblReservations
-                .Where(r => r.ArrivalDate.Value.DayOfYear == today.DayOfYear)
-                .ToList();*/
 
-            /*var reservations = _context.TblReservations
-                .Join(
-                    _context.TblReservationsExts,
-                    res => res.Idreservation,
-                    resExt => resExt.Idreservation,
-                    (res, resExt) => new { Reservation = res, ReservationExt = resExt })
-                .Join(
-                    _context.TblReservationsPartials,
-                    res => res.Reservation.Idreservation,
-                    resPart => resPart.Idreservation,
-                    (res, resPart) => new { Reservation = res, ReservationPart = resPart })
-                .Join(
-                    _context.TblReservationGuests,
-                    res => res.Reservation.Reservation.Idreservation,
-                    resG => resG.Idreservation,
-                    (res, resG) => new { Reservation = res, ReservationG = resG })
-                .ToList();*/
+            var tblReservations = _context.TblReservations
+                .Where(r => r.ArrivalDate.Value.DayOfYear == today.DayOfYear && 
+                                                                      r.ArrivalDate.Value.Year == today.Year &&
+                                                                      r.StornoDate == null)
+                .ToList();
+
+            List<(string resId, string name1, string name2)> possibilities = new();
+
+            foreach (var res in tblReservations)
+            {
+                var tblGuest = _context.TblGuests.Single(g => g.Idguest.ToString() == res.Idguest.ToString());
+                if (tblGuest != null)
+                {
+                    (string resId, string name1, string name2) possibility = (res.Idreservation.ToString(), tblGuest.Name1, tblGuest.Name2);
+
+                    possibilities.Add(possibility);
+                }
+            }
+
+            possibilities.Distinct();
+
+            ReservationDTO reservation = new()
+            {
+                Idreservations = new(),
+                ExternalResIds = new(),
+                IdRooms = new(),
+                ItemCodes = new(),
+                Guests = new()
+            };
 
             List<ReservationDTO> reservations = new();
 

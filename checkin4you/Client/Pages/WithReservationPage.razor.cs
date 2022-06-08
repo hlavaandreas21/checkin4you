@@ -43,7 +43,7 @@ namespace checkin4you.Client.Pages
             Reservation = new ReservationDTO();
             ReservationsLoaded = false;
 
-            if (!string.IsNullOrEmpty(value) && value.Length >= 10)
+            if (!string.IsNullOrEmpty(value) && value.Length == 10)
             {
                 ShowSpinner = true;
 
