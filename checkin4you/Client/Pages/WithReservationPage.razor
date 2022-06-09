@@ -68,8 +68,9 @@
                                 <RadzenTextBox @bind-Value="@Reservation.Guests.First().StateName" Placeholder="Land*" Style="width: 33.3%" />
                             </div>
                             <div class="d-flex w-100">
-                                <RadzenDatePicker TValue="DateTime?" @bind-Value="@Reservation.Guests.First().Birthdate" Placeholder="Geburtsdatum*" class="w-50 me-2" DateFormat="dd.MM.yyyy" />
-                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Email" Placeholder="E-Mail" class="w-50" />
+                                <RadzenDatePicker TValue="DateTime?" @bind-Value="@Reservation.Guests.First().Birthdate" Placeholder="Geburtsdatum*" class="me-2" DateFormat="dd.MM.yyyy" Style="width: 33.3%" />
+                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Phone" Placeholder="Telefonnummer*" class="me-2" Style="width: 33.3%" />
+                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Email" Placeholder="E-Mail" Style="width: 33.3%" />
                             </div>
                         </div>
                         <h4>Mitreisende</h4>
@@ -116,7 +117,7 @@
                 <p>Als Sie Ihren Aufenthalt gebucht haben wurde Ihnen Ihre Buchungsnummer von Ihrem Reiseanbieter per Mail zugesandt.</p>
                 <p class="mt-2">Die Buchungsnummer besteht aus 10 Ziffern.</p>
             </RadzenCard>
-            <RadzenButton Style="background-color: #9e2b25; height: 100%; width: 100%" Click="@Cancel" class="p-4 mt-4">
+            <RadzenButton Style="background-color: #1e1e1e; height: 100%; width: 100%" Click="@Cancel" class="p-4 mt-4">
                 Zurück zur Startseite!
             </RadzenButton>
         </div>

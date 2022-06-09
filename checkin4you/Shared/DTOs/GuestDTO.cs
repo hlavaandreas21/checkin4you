@@ -12,6 +12,7 @@
         public string? IdState { get; set; }
         public string? StateName { get; set; }
         public DateTime? Birthdate { get; set; }
+        public string? Phone { get; set; }
         public string? Email { get; set; }
     }
 }

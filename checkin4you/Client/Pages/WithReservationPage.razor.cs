@@ -1,4 +1,5 @@
 ﻿using checkin4you.Client.Services.Interfaces;
+using checkin4you.Client.Services.States;
 using checkin4you.Shared.DTOs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -15,6 +16,9 @@ namespace checkin4you.Client.Pages
 
         [Inject]
         private IJSRuntime JSRuntime { get; set; } = default!;
+
+        [Inject]
+        ReservationStateService ReservationStateService { get; set; } = default!;
 
         ReservationDTO? Reservation { get; set; }
 
@@ -91,7 +95,7 @@ namespace checkin4you.Client.Pages
             NavigationManager.NavigateTo("/home");
         }
 
-        private void TryCheckIn()
+        private async void TryCheckIn()
         {
             var allGuestsValid = IsMainGuestComplete(Reservation.Guests.First());
             
@@ -101,7 +105,11 @@ namespace checkin4you.Client.Pages
                 if (!isComplete) allGuestsValid = false;
             }
 
-            if (allGuestsValid) NavigationManager.NavigateTo("/checkedIn");
+            if (allGuestsValid)
+            {
+                await ReservationStateService.SetRooms(Reservation.ItemCodes);
+                NavigationManager.NavigateTo("/checkedIn");
+            }
             else ShowInvalidMessage = true;
         }
 
@@ -113,7 +121,8 @@ namespace checkin4you.Client.Pages
                 !string.IsNullOrEmpty(guest.ZipCode) &&
                 !string.IsNullOrEmpty(guest.CityName) &&
                 !string.IsNullOrEmpty(guest.StateName) &&
-                guest.Birthdate != null && guest.Birthdate > new DateTime())
+                guest.Birthdate != null && guest.Birthdate > new DateTime() &&
+                !string.IsNullOrEmpty(guest.Phone))
             {
                 return true;
             }

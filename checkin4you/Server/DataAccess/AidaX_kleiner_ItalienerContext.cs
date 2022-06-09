@@ -15,12 +15,14 @@ namespace checkin4you.Server.DataAccess
         }
 
         public virtual DbSet<TblGuest> TblGuests { get; set; } = null!;
+        public virtual DbSet<TblGuests2> TblGuests2s { get; set; } = null!;
         public virtual DbSet<TblItem> TblItems { get; set; } = null!;
         public virtual DbSet<TblReservation> TblReservations { get; set; } = null!;
         public virtual DbSet<TblReservationGuest> TblReservationGuests { get; set; } = null!;
         public virtual DbSet<TblReservationItem> TblReservationItems { get; set; } = null!;
         public virtual DbSet<TblReservationsExt> TblReservationsExts { get; set; } = null!;
         public virtual DbSet<TblReservationsPartial> TblReservationsPartials { get; set; } = null!;
+        public virtual DbSet<TblState> TblStates { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -151,6 +153,164 @@ namespace checkin4you.Server.DataAccess
                     .HasColumnName("TStamp");
 
                 entity.Property(e => e.ZipCode).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<TblGuests2>(entity =>
+            {
+                entity.HasKey(e => e.Idguest)
+                    .HasName("PK__tblGuests2__5CD6CB2B");
+
+                entity.ToTable("tblGuests2");
+
+                entity.HasIndex(e => e.Email, "IX_tblGuests2_Email");
+
+                entity.HasIndex(e => e.Idextern, "IX_tblGuests2_IDExtern");
+
+                entity.HasIndex(e => e.InsurancePolNo, "IX_tblGuests2_InsurancePolNo");
+
+                entity.HasIndex(e => e.Tstamp, "UIX_tblGuests2_TStamp")
+                    .IsUnique();
+
+                entity.Property(e => e.Idguest)
+                    .HasColumnName("IDGuest")
+                    .HasDefaultValueSql("(null)");
+
+                entity.Property(e => e.Bic)
+                    .HasMaxLength(11)
+                    .HasColumnName("BIC");
+
+                entity.Property(e => e.Comment).HasMaxLength(300);
+
+                entity.Property(e => e.CompanyPhone).HasMaxLength(30);
+
+                entity.Property(e => e.CompanyPhone2).HasMaxLength(30);
+
+                entity.Property(e => e.CreditCardOwner).HasMaxLength(50);
+
+                entity.Property(e => e.CreditCardValidTo).HasMaxLength(5);
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(250)
+                    .HasColumnName("EMail");
+
+                entity.Property(e => e.Email2)
+                    .HasMaxLength(250)
+                    .HasColumnName("EMail2");
+
+                entity.Property(e => e.Email3)
+                    .HasMaxLength(250)
+                    .HasColumnName("EMail3");
+
+                entity.Property(e => e.FamilyLetterSalutation).HasMaxLength(300);
+
+                entity.Property(e => e.Fax).HasMaxLength(30);
+
+                entity.Property(e => e.GuestExtraDate1).HasColumnType("datetime");
+
+                entity.Property(e => e.GuestExtraDate2).HasColumnType("datetime");
+
+                entity.Property(e => e.GuestExtraString1).HasMaxLength(100);
+
+                entity.Property(e => e.Homepage).HasMaxLength(250);
+
+                entity.Property(e => e.Iban)
+                    .HasMaxLength(34)
+                    .HasColumnName("IBAN");
+
+                entity.Property(e => e.Idagent).HasColumnName("IDAgent");
+
+                entity.Property(e => e.IddefaultArrangement).HasColumnName("IDDefaultArrangement");
+
+                entity.Property(e => e.IddefaultBookingMotive).HasColumnName("IDDefaultBookingMotive");
+
+                entity.Property(e => e.IddefaultMarketCode).HasColumnName("IDDefaultMarketCode");
+
+                entity.Property(e => e.IddefaultPersonType).HasColumnName("IDDefaultPersonType");
+
+                entity.Property(e => e.IddefaultSourceCode).HasColumnName("IDDefaultSourceCode");
+
+                entity.Property(e => e.Idextern)
+                    .HasMaxLength(30)
+                    .HasColumnName("IDExtern");
+
+                entity.Property(e => e.IdfamilyDoctor).HasColumnName("IDFamilyDoctor");
+
+                entity.Property(e => e.IdfinancialAccount).HasColumnName("IDFinancialAccount");
+
+                entity.Property(e => e.IdhealthInsurance).HasColumnName("IDHealthInsurance");
+
+                entity.Property(e => e.IdinsuranceInvoiceLocation).HasColumnName("IDInsuranceInvoiceLocation");
+
+                entity.Property(e => e.IdinsurancePayer).HasColumnName("IDInsurancePayer");
+
+                entity.Property(e => e.IdinvoiceNoRange).HasColumnName("IDInvoiceNoRange");
+
+                entity.Property(e => e.IdpaymentCondition).HasColumnName("IDPaymentCondition");
+
+                entity.Property(e => e.IdpaymentType).HasColumnName("IDPaymentType");
+
+                entity.Property(e => e.Idsex).HasColumnName("IDSex");
+
+                entity.Property(e => e.IdtravelDocument).HasColumnName("IDTravelDocument");
+
+                entity.Property(e => e.InsurancePol).HasMaxLength(20);
+
+                entity.Property(e => e.InsurancePolNo).HasMaxLength(20);
+
+                entity.Property(e => e.Job).HasMaxLength(80);
+
+                entity.Property(e => e.JobPosition).HasMaxLength(50);
+
+                entity.Property(e => e.LastImportDate).HasColumnType("datetime");
+
+                entity.Property(e => e.LetterName1).HasMaxLength(200);
+
+                entity.Property(e => e.LetterName2).HasMaxLength(200);
+
+                entity.Property(e => e.LetterName3).HasMaxLength(200);
+
+                entity.Property(e => e.LetterSalutation).HasMaxLength(300);
+
+                entity.Property(e => e.MatchCode).HasMaxLength(20);
+
+                entity.Property(e => e.Misc).HasMaxLength(50);
+
+                entity.Property(e => e.Misc2).HasMaxLength(50);
+
+                entity.Property(e => e.Mobile).HasMaxLength(30);
+
+                entity.Property(e => e.Phone).HasMaxLength(30);
+
+                entity.Property(e => e.Phone2).HasMaxLength(30);
+
+                entity.Property(e => e.RebateAmount).HasColumnType("money");
+
+                entity.Property(e => e.RebateArra).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Salutation).HasMaxLength(100);
+
+                entity.Property(e => e.SpecialismField).HasMaxLength(2);
+
+                entity.Property(e => e.TableCode).HasMaxLength(20);
+
+                entity.Property(e => e.TravelDocumentBirthCity).HasMaxLength(50);
+
+                entity.Property(e => e.TravelDocumentCity).HasMaxLength(50);
+
+                entity.Property(e => e.TravelDocumentDate).HasColumnType("datetime");
+
+                entity.Property(e => e.TravelDocumentNo).HasMaxLength(50);
+
+                entity.Property(e => e.Tstamp)
+                    .IsRowVersion()
+                    .IsConcurrencyToken()
+                    .HasColumnName("TStamp");
+
+                entity.Property(e => e.VatidentNo)
+                    .HasMaxLength(20)
+                    .HasColumnName("VATIdentNo");
+
+                entity.Property(e => e.VehicleNo).HasMaxLength(80);
             });
 
             modelBuilder.Entity<TblItem>(entity =>
@@ -838,6 +998,53 @@ namespace checkin4you.Server.DataAccess
                     .IsRowVersion()
                     .IsConcurrencyToken()
                     .HasColumnName("TStamp");
+            });
+
+            modelBuilder.Entity<TblState>(entity =>
+            {
+                entity.HasKey(e => e.Idstate)
+                    .HasName("PK__tblStates__173876EA");
+
+                entity.ToTable("tblStates");
+
+                entity.Property(e => e.Idstate)
+                    .HasColumnName("IDState")
+                    .HasDefaultValueSql("(null)");
+
+                entity.Property(e => e.AreaCode).HasMaxLength(10);
+
+                entity.Property(e => e.Capital).HasMaxLength(50);
+
+                entity.Property(e => e.Continent).HasMaxLength(50);
+
+                entity.Property(e => e.Iso3166)
+                    .HasMaxLength(2)
+                    .HasColumnName("ISO3166");
+
+                entity.Property(e => e.Iso3166a3)
+                    .HasMaxLength(3)
+                    .HasColumnName("ISO3166A3");
+
+                entity.Property(e => e.Le)
+                    .HasColumnType("datetime")
+                    .HasColumnName("LE");
+
+                entity.Property(e => e.Lefrom)
+                    .HasMaxLength(30)
+                    .HasColumnName("LEFrom");
+
+                entity.Property(e => e.LicencePlateNumber).HasMaxLength(3);
+
+                entity.Property(e => e.StateCode).HasMaxLength(10);
+
+                entity.Property(e => e.StateName).HasMaxLength(50);
+
+                entity.Property(e => e.Tstamp)
+                    .IsRowVersion()
+                    .IsConcurrencyToken()
+                    .HasColumnName("TStamp");
+
+                entity.Property(e => e.WinTopKey).HasMaxLength(5);
             });
 
             OnModelCreatingPartial(modelBuilder);

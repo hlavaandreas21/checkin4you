@@ -20,7 +20,7 @@ namespace checkin4you.Server.Controllers
         {
             //DateTime today = DateTime.Today;
 
-            DateTime today = new(2021, 8, 7);
+            DateTime today = new(2021, 11, 3);
 
 
             var tblReservations = _context.TblReservations
@@ -50,7 +50,99 @@ namespace checkin4you.Server.Controllers
         {
             string[] ids = idReservations.Split("&");
 
-            return new ReservationDTO();
+            ReservationDTO reservationFinal = new()
+            {
+                Idreservations = new(),
+                ExternalResIds = new(),
+                IdRooms = new(),
+                ItemCodes = new(),
+                Guests = new()
+            };
+
+            List<string> reservationsToDeleteIds = new();
+
+            try
+            {
+                foreach (var reservation in ids)
+                {
+                    reservationFinal.Idreservations.Add(reservation);
+
+                    var tblReservationsExt = _context.TblReservationsExts.SingleOrDefault(r => r.Idreservation.ToString() == reservation);
+                    if (!string.IsNullOrEmpty(tblReservationsExt.ExternalResId)) reservationFinal.ExternalResIds.Add(tblReservationsExt.ExternalResId);
+
+                    var tblReservation = _context.TblReservations.SingleOrDefault(r => r.Idreservation.ToString() == reservation);
+                    if (tblReservation != null)
+                    {
+                        if (tblReservation.StornoDate != null)
+                        {
+                            reservationsToDeleteIds.Add(tblReservation.Idreservation.ToString().ToUpper());
+                            continue;
+                        }
+                        reservationFinal.ArrivalDate = tblReservation.ArrivalDate;
+                        reservationFinal.DepartureDate = tblReservation.DepartureDate;
+                    }
+
+                    var tblReservationPartial = _context.TblReservationsPartials.SingleOrDefault(r => r.Idreservation.ToString() == reservation);
+                    if (tblReservationPartial != null)
+                    {
+                        reservationFinal.IdRooms.Add(tblReservationPartial.Idroom.ToString());
+                    }
+
+                    var tblReservationsGuestsItems = _context.TblReservationGuests.Where(r => r.Idreservation.ToString() == reservation).ToList();
+                    if (tblReservationsGuestsItems != null)
+                    {
+                        foreach (var guest in tblReservationsGuestsItems)
+                        {
+                            reservationFinal.Guests.Add(new GuestDTO()
+                            {
+                                Idguest = guest.Idguest.ToString(),
+                                Name1 = guest.Name1,
+                                Name2 = guest.Name2,
+                                Name3 = guest.Name3,
+                                Street = guest.Street,
+                                ZipCode = guest.ZipCode,
+                                CityName = guest.CityName,
+                                IdState = guest.Idstate.ToString(),
+                                StateName = _context.TblStates.SingleOrDefault(st => st.Idstate == guest.Idstate).StateName,
+                                Birthdate = guest.Birthdate,
+                                Email = guest.Email
+                            });
+                        }
+                    }
+                }
+
+                foreach (var roomId in reservationFinal.IdRooms)
+                {
+                    var roomCode = _context.TblItems.SingleOrDefault(i => i.Iditem.ToString() == roomId).ItemCode;
+                    reservationFinal.ItemCodes.Add(roomCode);
+                }
+
+                reservationFinal.Idreservations.RemoveAll(res => reservationsToDeleteIds.Contains(res));
+
+                reservationFinal.ExternalResIds = reservationFinal.ExternalResIds.Distinct().ToList();
+                reservationFinal.Guests = reservationFinal.Guests.OrderByDescending(g => g.Idguest).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+            if (reservationFinal.Idreservations != null && reservationFinal.Idreservations.Any() &&
+                reservationFinal.ArrivalDate != null &&
+                reservationFinal.DepartureDate != null &&
+                reservationFinal.IdRooms != null && reservationFinal.IdRooms.Any() &&
+                reservationFinal.ItemCodes != null && reservationFinal.ItemCodes.Any() &&
+                reservationFinal.Guests != null && reservationFinal.Guests.Any())
+            {
+                reservationFinal.IsComplete = true;
+            }
+            else
+            {
+                reservationFinal.IsComplete = false;
+            }
+
+            return reservationFinal;
         }
 
         [HttpGet("byExternalResId/{externalReservationId}")]
@@ -79,7 +171,7 @@ namespace checkin4you.Server.Controllers
                     reservationFinal.Idreservations.Add(reservation.Idreservation.ToString());
                     reservationFinal.ExternalResIds.Add(externalReservationId);
 
-                    var tblReservation = _context.TblReservations.Single(r => r.Idreservation.ToString() == reservation.Idreservation.ToString());
+                    var tblReservation = _context.TblReservations.SingleOrDefault(r => r.Idreservation.ToString() == reservation.Idreservation.ToString());
                     if (tblReservation != null)
                     {
                         if (tblReservation.StornoDate != null || !(tblReservation.ArrivalDate?.DayOfYear == date.DayOfYear && tblReservation.ArrivalDate.Value.Year == date.Year))
@@ -91,7 +183,7 @@ namespace checkin4you.Server.Controllers
                         reservationFinal.DepartureDate = tblReservation.DepartureDate;
                     }
 
-                    var tblReservationPartial = _context.TblReservationsPartials.Single(r => r.Idreservation.ToString() == reservation.Idreservation.ToString());
+                    var tblReservationPartial = _context.TblReservationsPartials.SingleOrDefault(r => r.Idreservation.ToString() == reservation.Idreservation.ToString());
                     if (tblReservationPartial != null)
                     {
                         reservationFinal.IdRooms.Add(tblReservationPartial.Idroom.ToString());
@@ -112,9 +204,10 @@ namespace checkin4you.Server.Controllers
                                 ZipCode = guest.ZipCode,
                                 CityName = guest.CityName,
                                 IdState = guest.Idstate.ToString(),
-                                StateName = "TODO",
+                                StateName = _context.TblStates.SingleOrDefault(st => st.Idstate == guest.Idstate).StateName,
                                 Birthdate = guest.Birthdate,
-                                Email = guest.Email
+                                Phone = _context.TblGuests2s.SingleOrDefault(p => p.Idguest == guest.Idguest).Phone,
+                                Email = _context.TblGuests2s.SingleOrDefault(em => em.Idguest == guest.Idguest).Email
                             });
                         }
                     }
@@ -122,13 +215,14 @@ namespace checkin4you.Server.Controllers
 
                 foreach (var roomId in reservationFinal.IdRooms)
                 {
-                    var roomCode = _context.TblItems.Single(i => i.Iditem.ToString() == roomId).ItemCode;
+                    var roomCode = _context.TblItems.SingleOrDefault(i => i.Iditem.ToString() == roomId).ItemCode;
                     reservationFinal.ItemCodes.Add(roomCode);
                 }
 
                 reservationFinal.Idreservations.RemoveAll(res => reservationsToDeleteIds.Contains(res));
 
-                reservationFinal.Guests.Reverse();
+                reservationFinal.ExternalResIds = reservationFinal.ExternalResIds.Distinct().ToList();
+                reservationFinal.Guests = reservationFinal.Guests.OrderByDescending(g => g.Idguest).ToList();
             }
             catch (Exception ex)
             {
