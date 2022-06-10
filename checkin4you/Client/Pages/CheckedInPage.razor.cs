@@ -8,16 +8,16 @@ namespace checkin4you.Client.Pages
         [Inject]
         ReservationStateService ReservationStateService { get; set; } = default!;
 
-        private List<string> Rooms { get; set; }
+        private List<string>? Rooms { get; set; }
 
         protected override void OnInitialized()
         {
             Rooms = ReservationStateService.Rooms;
         }
 
-        public async void Dispose()
+        public void Dispose()
         {
-            await ReservationStateService.SetRooms(null);
+            ReservationStateService.SetRooms(null);
             GC.SuppressFinalize(this);
         }
     }

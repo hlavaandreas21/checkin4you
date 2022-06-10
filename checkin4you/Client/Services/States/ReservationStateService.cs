@@ -5,12 +5,12 @@
         public List<string>? Rooms { get; private set; } = new();
         public List<string>? CheckedInReservationIds { get; private set; } = new();
 
-        public async Task AddCheckedInReservationId(string IdCheckedInReservation)
+        public void AddCheckedInReservationId(string IdCheckedInReservation)
         {
             CheckedInReservationIds.Add(IdCheckedInReservation);
         }
 
-        public async Task SetRooms(List<string> rooms)
+        public void SetRooms(List<string> rooms)
         {
             Rooms = rooms;
         }

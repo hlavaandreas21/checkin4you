@@ -148,7 +148,9 @@ namespace checkin4you.Server.Controllers
         [HttpGet("byExternalResId/{externalReservationId}")]
         public ReservationDTO GetReservationByReservationId(string externalReservationId)
         {
-            DateTime date = new(2021,8,7);
+            //DateTime today = new();
+
+            DateTime today = new(2021, 11, 3);
 
             ReservationDTO reservationFinal = new(){
                 Idreservations = new(),
@@ -174,7 +176,7 @@ namespace checkin4you.Server.Controllers
                     var tblReservation = _context.TblReservations.SingleOrDefault(r => r.Idreservation.ToString() == reservation.Idreservation.ToString());
                     if (tblReservation != null)
                     {
-                        if (tblReservation.StornoDate != null || !(tblReservation.ArrivalDate?.DayOfYear == date.DayOfYear && tblReservation.ArrivalDate.Value.Year == date.Year))
+                        if (tblReservation.StornoDate != null || !(tblReservation.ArrivalDate?.DayOfYear == today.DayOfYear && tblReservation.ArrivalDate.Value.Year == today.Year))
                         {
                             reservationsToDeleteIds.Add(tblReservation.Idreservation.ToString().ToUpper());
                             continue;

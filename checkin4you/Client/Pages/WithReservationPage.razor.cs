@@ -32,11 +32,6 @@ namespace checkin4you.Client.Pages
 
         public WithReservationPage() { }
 
-        public WithReservationPage(IReservationService reservationService)
-        {
-            ReservationService = reservationService;
-        }
-
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             base.OnAfterRender(firstRender);
@@ -56,7 +51,13 @@ namespace checkin4you.Client.Pages
                 await Task.Delay(500);
 
                 Reservation = await ReservationService.GetReservationByExternalResIdAsync(value);
+                var checkedInReservationIds = ReservationStateService.CheckedInReservationIds;
+
                 if (!Reservation.IsComplete) Reservation = null;
+                foreach (var idReservation in Reservation.Idreservations)
+                {
+                    if (checkedInReservationIds.Contains(idReservation)) Reservation = null;
+                }
 
                 ShowSpinner = false;
 
@@ -95,10 +96,10 @@ namespace checkin4you.Client.Pages
             NavigationManager.NavigateTo("/home");
         }
 
-        private async void TryCheckIn()
+        private void TryCheckIn()
         {
             var allGuestsValid = IsMainGuestComplete(Reservation.Guests.First());
-            
+
             foreach (var guest in Reservation.Guests.Skip(1))
             {
                 var isComplete = IsAdditionalGuestComplete(guest);
@@ -107,7 +108,11 @@ namespace checkin4you.Client.Pages
 
             if (allGuestsValid)
             {
-                await ReservationStateService.SetRooms(Reservation.ItemCodes);
+                ReservationStateService.SetRooms(Reservation.ItemCodes);
+                foreach (var idReservation in Reservation.Idreservations)
+                {
+                    ReservationStateService.AddCheckedInReservationId(idReservation);
+                }
                 NavigationManager.NavigateTo("/checkedIn");
             }
             else ShowInvalidMessage = true;

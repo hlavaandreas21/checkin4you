@@ -24,7 +24,7 @@ namespace checkin4you.Client.Pages
 
         List<PossibleReservation>? PossibleReservations { get; set; }
 
-        private List<string> ResTexts { get; set; }
+        private List<string>? ResTexts { get; set; }
 
         private bool ReservationsLoaded { get; set; } = false;
 
@@ -117,7 +117,7 @@ namespace checkin4you.Client.Pages
             NavigationManager.NavigateTo("/home");
         }
 
-        private async void TryCheckIn()
+        private void TryCheckIn()
         {
             var allGuestsValid = IsMainGuestComplete(Reservation.Guests.First());
 
@@ -129,10 +129,10 @@ namespace checkin4you.Client.Pages
 
             if (allGuestsValid)
             {
-                await ReservationStateService.SetRooms(Reservation.ItemCodes);
+                ReservationStateService.SetRooms(Reservation.ItemCodes);
                 foreach (var idReservation in Reservation.Idreservations)
                 {
-                    await ReservationStateService.AddCheckedInReservationId(idReservation);
+                    ReservationStateService.AddCheckedInReservationId(idReservation);
                 }
                 NavigationManager.NavigateTo("/checkedIn/");
             }
