@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace checkin4you.Shared.Models
+﻿namespace checkin4you.Shared.Models
 {
     public partial class TblReservationItem
     {

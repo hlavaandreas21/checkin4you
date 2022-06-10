@@ -14,8 +14,8 @@ namespace checkin4you.Server.Controllers
         public ReservationsController(AidaX_kleiner_ItalienerContext context)
         {
             _context = context;
-        } 
-        
+        }
+
         [HttpGet("[action]")]
         public List<string> GetCheckedInReservationIds()
         {
@@ -43,7 +43,7 @@ namespace checkin4you.Server.Controllers
 
 
             var tblReservations = _context.TblReservations
-                .Where(r => r.ArrivalDate.Value.DayOfYear == today.DayOfYear && 
+                .Where(r => r.ArrivalDate.Value.DayOfYear == today.DayOfYear &&
                             r.ArrivalDate.Value.Year == today.Year &&
                             r.StornoDate == null)
                 .ToList();
@@ -171,7 +171,8 @@ namespace checkin4you.Server.Controllers
 
             DateTime today = new(2021, 11, 3);
 
-            ReservationDTO reservationFinal = new(){
+            ReservationDTO reservationFinal = new()
+            {
                 Idreservations = new(),
                 ExternalResIds = new(),
                 IdRooms = new(),

@@ -13,13 +13,13 @@ namespace checkin4you.Client.Services.Implementations
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<PossibleReservation>> GetAllReservationsForTodayAsync() 
+        public async Task<IEnumerable<PossibleReservation>> GetAllReservationsForTodayAsync()
             => await _httpClient.GetFromJsonAsync<IEnumerable<PossibleReservation>>("api/reservations/today");
 
         public async Task<ReservationDTO> GetReservationByIdReservationsAsync(string idReservations)
             => await _httpClient.GetFromJsonAsync<ReservationDTO>("api/reservations/ByIdReservations/" + idReservations);
 
-        public async Task<ReservationDTO> GetReservationByExternalResIdAsync(string reservationId) 
+        public async Task<ReservationDTO> GetReservationByExternalResIdAsync(string reservationId)
             => await _httpClient.GetFromJsonAsync<ReservationDTO>("api/reservations/ByExternalResId/" + reservationId);
     }
 }
