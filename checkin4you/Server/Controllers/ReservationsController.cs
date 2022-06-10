@@ -1,6 +1,7 @@
 ﻿using checkin4you.Server.DataAccess;
 using checkin4you.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace checkin4you.Server.Controllers
 {
@@ -13,7 +14,25 @@ namespace checkin4you.Server.Controllers
         public ReservationsController(AidaX_kleiner_ItalienerContext context)
         {
             _context = context;
-        }        
+        } 
+        
+        [HttpGet("[action]")]
+        public List<string> GetCheckedInReservationIds()
+        {
+            using StreamReader file = System.IO.File.OpenText("checkedInReservations.json");
+            JsonSerializer serializer = new();
+
+            List<string> checkedInReservationIds = (List<string>)serializer.Deserialize(file, typeof(List<string>));
+
+            if (checkedInReservationIds == null)
+            {
+                return new List<string>();
+            }
+            else
+            {
+                return checkedInReservationIds;
+            }
+        }
 
         [HttpGet("today")]
         public IEnumerable<PossibleReservation> GetAllReservationsForToday()
@@ -247,6 +266,13 @@ namespace checkin4you.Server.Controllers
             }
 
             return reservationFinal;
+        }
+
+        [HttpPost]
+        public void PersistCheckedInReservationIds([FromBody] List<string> checkedInReservationIds)
+        {
+            string json = JsonConvert.SerializeObject(checkedInReservationIds);
+            System.IO.File.WriteAllText("checkedInReservations.json", json);
         }
     }
 }

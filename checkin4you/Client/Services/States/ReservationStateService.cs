@@ -5,6 +5,14 @@
         public List<string>? Rooms { get; private set; } = new();
         public List<string>? CheckedInReservationIds { get; private set; } = new();
 
+        public void SetCheckedInReservationIds(List<string> checkedInReservationIds)
+        {
+            if (checkedInReservationIds != null)
+            {
+                CheckedInReservationIds = checkedInReservationIds;
+            }
+        }
+
         public void AddCheckedInReservationId(string IdCheckedInReservation)
         {
             CheckedInReservationIds.Add(IdCheckedInReservation);

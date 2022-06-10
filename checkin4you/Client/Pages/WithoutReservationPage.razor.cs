@@ -3,11 +3,15 @@ using checkin4you.Client.Services.States;
 using checkin4you.Shared.DTOs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Net.Http.Json;
 
 namespace checkin4you.Client.Pages
 {
     public partial class WithoutReservationPage
     {
+        [Inject]
+        HttpClient HttpClient { get; set; } = default!;
+
         [Inject]
         IReservationService ReservationService { get; set; } = default!;
 
@@ -134,7 +138,8 @@ namespace checkin4you.Client.Pages
                 {
                     ReservationStateService.AddCheckedInReservationId(idReservation);
                 }
-                NavigationManager.NavigateTo("/checkedIn/");
+                HttpClient.PostAsJsonAsync<List<string>>("api/reservations", ReservationStateService.CheckedInReservationIds.TakeLast(500).ToList());
+                NavigationManager.NavigateTo("/checkedIn");
             }
             else ShowInvalidMessage = true;
         }

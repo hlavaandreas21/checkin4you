@@ -3,10 +3,13 @@
 <div class="d-flex flex-column w-100 h-100">
     <div class="d-flex w-100 h-50">
         <div class="w-50 p-4">
-            @foreach(var room in Rooms)
-            {
-                @room
-            }
+            <RadzenCard class="d-flex flex-column" Style="background-color: #40A535; color: white">
+                <h1>Sie haben erfolgreich eingecheckt!</h1>
+                @if (Rooms != null && Rooms.Any() && Rooms.Count == 1)
+                {
+                    <div>Ihr Zimmer ist @Rooms.First()</div>
+                }
+            </RadzenCard>
         </div>
         <div class="w-50 p-4">
             Kleiner Italiener Info
@@ -14,7 +17,7 @@
     </div>
     <div class="d-flex w-100 h-50">
         <div class="w-50 p-4">
-            <video width="100%" height="100%" loop autoplay muted>
+            <video class="checkInVideo" loop autoplay muted>
                 <source src="/videos/video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
