@@ -22,7 +22,7 @@ namespace checkin4you.Client.Pages
 
         ReservationDTO? Reservation { get; set; }
 
-        IEnumerable<PossibleReservation> PossibleReservations { get; set; }
+        List<PossibleReservation>? PossibleReservations { get; set; }
 
         private List<string> ResTexts { get; set; }
 
@@ -38,7 +38,9 @@ namespace checkin4you.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            PossibleReservations = await ReservationService.GetAllReservationsForTodayAsync();
+            PossibleReservations = (await ReservationService.GetAllReservationsForTodayAsync()).ToList();
+            var checkedInReservationIds = ReservationStateService.CheckedInReservationIds;
+            PossibleReservations.RemoveAll(pr => checkedInReservationIds.Contains(pr.IdReservation));
             ResTexts = PossibleReservations.Select(pr => pr.ResText.ToLower()).ToList();
         }
 
@@ -128,6 +130,10 @@ namespace checkin4you.Client.Pages
             if (allGuestsValid)
             {
                 await ReservationStateService.SetRooms(Reservation.ItemCodes);
+                foreach (var idReservation in Reservation.Idreservations)
+                {
+                    await ReservationStateService.AddCheckedInReservationId(idReservation);
+                }
                 NavigationManager.NavigateTo("/checkedIn/");
             }
             else ShowInvalidMessage = true;
