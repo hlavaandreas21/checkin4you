@@ -8,11 +8,19 @@ namespace checkin4you.Client.Pages
         [Inject]
         ReservationStateService ReservationStateService { get; set; } = default!;
 
+        [Inject]
+        NavigationManager NavigationManager { get; set; } = default!;
+
         private List<string>? Rooms { get; set; }
 
         protected override void OnInitialized()
         {
             Rooms = ReservationStateService.Rooms;
+        }
+
+        private void BackToHome()
+        {
+            NavigationManager.NavigateTo("/home");
         }
 
         public void Dispose()

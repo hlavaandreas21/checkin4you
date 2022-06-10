@@ -1,4 +1,23 @@
 ﻿.checkInVideo {
     height: 100%;
     width: 100%;
+    object-fit: fill;
+    border-radius: 0.35rem
+}
+
+.room-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 70%;
+}
+
+.room {
+    font-size: 1.5rem;
+}
+
+.text-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
 }

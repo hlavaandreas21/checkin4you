@@ -58,9 +58,12 @@ namespace checkin4you.Client.Pages
                 var checkedInReservationIds = ReservationStateService.CheckedInReservationIds;
 
                 if (!Reservation.IsComplete) Reservation = null;
-                foreach (var idReservation in Reservation.Idreservations)
+                if (Reservation != null)
                 {
-                    if (checkedInReservationIds.Contains(idReservation)) Reservation = null;
+                    foreach (var idReservation in Reservation.Idreservations)
+                    {
+                        if (checkedInReservationIds.Contains(idReservation)) Reservation = null;
+                    }
                 }
 
                 ShowSpinner = false;
