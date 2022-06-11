@@ -1,9 +1,11 @@
 ﻿using checkin4you.Client.Services.Interfaces;
 using checkin4you.Client.Services.States;
 using checkin4you.Shared.DTOs;
+using checkin4you.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
+using System.Text;
 
 namespace checkin4you.Client.Pages
 {
@@ -121,6 +123,16 @@ namespace checkin4you.Client.Pages
                     ReservationStateService.AddCheckedInReservationId(idReservation);
                 }
                 HttpClient.PostAsJsonAsync<List<string>>("api/reservations", ReservationStateService.CheckedInReservationIds.TakeLast(500).ToList());
+
+                MailRequest mailRequest = new()
+                {
+                    ToEmail = "hlavaandreas@gmail.com",
+                    Subject = "Checkin " + Reservation.Guests.First().Name1 + " " + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"),
+                    Body = GenerateEmailBody(Reservation)
+                };
+
+                HttpClient.PostAsJsonAsync<MailRequest>("api/Email", mailRequest);
+
                 NavigationManager.NavigateTo("/checkedIn");
             }
             else ShowInvalidMessage = true;
@@ -151,6 +163,64 @@ namespace checkin4you.Client.Pages
                 return true;
             }
             else return false;
+        }
+
+        private static string GenerateEmailBody(ReservationDTO reservation)
+        {
+            StringBuilder sb = new();
+
+            var commaSeperatedIdReservations = reservation.Idreservations.Select(idr => idr.ToString()).ToList();
+
+            sb.AppendLine("Reservierungs-IDs: " + string.Join("; ", reservation.Idreservations));
+            if (reservation.ExternalResIds.Any())
+            {
+                sb.AppendLine("Externe Buchungsnummern: " + string.Join("; ", reservation.ExternalResIds));
+            }
+            else
+            {
+                sb.AppendLine("Keine externe Reservierung!");
+            }
+            sb.AppendLine();
+            sb.AppendLine("Ankunft: " + reservation.ArrivalDate?.ToString("dd.MM.yyyy"));
+            sb.AppendLine("Abreise: " + reservation.DepartureDate?.ToString("dd.MM.yyyy"));
+            sb.AppendLine("Anzahl der Nächte: " + (reservation.DepartureDate.Value.Date - reservation.ArrivalDate.Value.Date).Days);
+            sb.AppendLine();
+            sb.AppendLine("Zimmer: " + string.Join(", ", reservation.ItemCodes));
+            sb.AppendLine();
+
+            var mainGuest = reservation.Guests.First();
+            sb.AppendLine("Hauptgast:");
+            sb.AppendLine(mainGuest.Name1 + " " + mainGuest.Name2 + ", Geburtsdatum: " + mainGuest.Birthdate?.ToString("dd.MM.yyyy"));
+            sb.AppendLine(mainGuest.Street + ", " + mainGuest.ZipCode + " " + mainGuest.CityName + ", " + mainGuest.StateName);
+            sb.AppendLine("Telefonnummer: " + mainGuest.Phone);
+            if (!string.IsNullOrEmpty(mainGuest.Email))
+            {
+                sb.AppendLine("E-Mail: " + mainGuest.Email);
+            }
+            sb.AppendLine();
+
+            if (reservation.Guests.Count > 1)
+            {
+                sb.AppendLine("Mitreisende:");
+                foreach (var guest in reservation.Guests.Skip(1))
+                {
+                    sb.AppendLine(guest.Name1 + " " + guest.Name2 + ", Geburtsdatum: " + guest.Birthdate?.ToString("dd.MM.yyyy"));
+                }
+                sb.AppendLine();
+            }
+
+            var taxCount = reservation.Guests.Count(g => GetCurrentAgeOfGuest(g) >= 12);
+
+            sb.AppendLine("Anzahl der zu erhebenden Ortstaxen: " + taxCount);
+
+            return sb.ToString();
+        }
+
+        private static int GetCurrentAgeOfGuest(GuestDTO guest)
+        {
+            int years = DateTime.Now.Year - guest.Birthdate.Value.Year;
+            if (DateTime.Now.Month < guest.Birthdate.Value.Month || (DateTime.Now.Month == guest.Birthdate.Value.Month && DateTime.Now.Day < guest.Birthdate.Value.Day)) years--;
+            return years;
         }
     }
 }
