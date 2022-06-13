@@ -2,61 +2,60 @@
 
 <div class="d-flex flex-column w-100 h-100">
     <div class="d-flex w-100" style="height: 45%">
-        <div class="w-50 ps-4 pt-4 pe-4 pb-4">
+        <div class="w-50 ms-4 mt-4 me-4 mb-4">
             <RadzenCard class="d-flex flex-column h-100" Style="background-color: #40A535; color: white">
-                <div style="font-size: 2rem" class="mb-2 w-100 text-overflow">Sie haben erfolgreich eingecheckt!</div>
+                <h1>Sie haben erfolgreich eingecheckt!</h1>
                 @if (Rooms != null && Rooms.Any() && Rooms.Count == 1)
                 {
-                    <div style="font-size: 1.5rem;" class="mb-2">Ihr Zimmer ist:</div>
-                    <div class="room-container h-100">
-                        <div class="d-flex align-items-center justify-content-center room h-100">
-                            <span>@Rooms.First()</span>
+                    <h3>Ihr Zimmer ist:</h3>
+                    <div class="room-container">
+                        <div class="room">
+                            @Rooms.First()
                         </div>
                     </div>
                 }
                 else if (Rooms != null && Rooms.Any() && Rooms.Count > 1)
                 {
-                    <div style="font-size: 1.5rem;" class="mb-2">Ihre Zimmer sind:</div>
-                    <div class="room-container">
+                    <h3>Ihre Zimmer sind:</h3>
+                    <div class="@(Rooms.Count > 4 ? "room-container-small" : "room-container")">
                         @foreach(var room in Rooms)
                         {
-                            <div class="room">
+                            <div class="@(Rooms.Count > 4 ? "room-small" : "room")">
                                 @room
                             </div>
                         }
                     </div>
                 }
-                <div class="mt-auto"></div>
             </RadzenCard>
         </div>
-        <div class="w-50 ps-0 pt-4 pe-4 pb-4">
+        <div class="w-50 ms-0 mt-4 me-4 mb-4">
             <RadzenCard class="d-flex h-100" Style="background-color: #1e1e1e; color: white">
                 <h1>Wir wünschen Ihnen einen angenehmen Aufenthalt!</h1>
                 <div class="mt-auto"></div>
-                <h2>Sie haben Fragen oder möchten uns kontaktieren?</h2>
-                <span>Gerne helfen Ihnen unserer Mitarbeiter im Restaurant weiter oder Sie erreichen uns unter +43 7723 20614</span>
+                <h3>Sie haben Fragen oder möchten uns kontaktieren?</h3>
+                <div class="text">Gerne helfen Ihnen unserer Mitarbeiter im Restaurant weiter oder Sie erreichen uns unter +43 7723 20614</div>
             </RadzenCard>
         </div>
     </div>
     <div class="d-flex w-100" style="height: 45%">
-        <div class="w-50 ps-4 pt-0 pe-4 pb-4">
+        <div class="w-50 ms-4 mt-0 me-4 mb-4">
             <video class="checkInVideo" loop autoplay muted>
                 <source src="/videos/video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
+                Beim Laden des Videos ist ein Fehler aufgetreten.
             </video>
         </div>
-        <div class="w-50 ps-0 pt-0 pe-4 pb-4">
+        <div class="w-50 ms-0 mt-0 me-4 mb-4">
             <RadzenCard class="d-flex flex-column h-100" Style="background-color: #1e1e1e; color: white">
-                <div style="font-size: 2rem;" class="mb-2 text-overflow">Frühstückszeiten</div>
-                <div class="pb-2 text-overflow" style="font-size: 1.25rem">07.00 bis 11.00 Uhr</div>
-                <div style="font-size: 2rem;" class="mb-2 text-overflow">Öffnungszeiten Restaurant</div>
-                <div class="d-flex flex-column pb-2">
-                    <div style="font-size: 1.25rem">Dienstag bis Freitag </div>
-                    <p class="pb-1 text-overflow">17.00 bis 22.30 Uhr (warme Küche bis 22.00 Uhr)</p>
-                    <div style="font-size: 1.25rem">Samstag</div>
-                    <p class="pb-1 text-overflow">11.00 bis 14.00 Uhr und 17:00 bis 22:30 Uhr (warme Küche bis 22.00 Uhr)</p>
-                    <div style="font-size: 1.2rem">Sonn- und Feiertage</div>
-                    <p class="pb-1 text-overflow">11.00 bis 14.00 Uhr und 17.00 bis 22.00 Uhr (warme Küche bis 21.00 Uhr)</p>
+                <h3>Frühstückszeiten</h3>
+                <div class="small-heading mb-4">07.00 bis 11.00 Uhr</div>
+                <h3>Öffnungszeiten Restaurant</h3>
+                <div class="d-flex flex-column">
+                    <div class="small-heading mb-1">Dienstag bis Freitag </div>
+                    <div class="text mb-1">17.00 bis 22.30 Uhr (warme Küche bis 22.00 Uhr)</div>
+                    <div class="small-heading mb-1">Samstag</div>
+                    <div class="text mb-1">11.00 bis 14.00 Uhr und 17:00 bis 22:30 Uhr (warme Küche bis 22.00 Uhr)</div>
+                    <div class="small-heading mb-1">Sonn- und Feiertage</div>
+                    <div class="text">11.00 bis 14.00 Uhr und 17.00 bis 22.00 Uhr (warme Küche bis 21.00 Uhr)</div>
                 </div>
             </RadzenCard>
         </div>
