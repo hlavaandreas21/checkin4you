@@ -1,7 +1,7 @@
 ﻿using checkin4you.Client.Services.States;
 using Microsoft.AspNetCore.Components;
 
-namespace checkin4you.Client.Pages
+namespace checkin4you.Client.Pages.DE
 {
     public partial class CheckedInPage : IDisposable
     {

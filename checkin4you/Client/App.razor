@@ -1,6 +1,7 @@
 ﻿@using checkin4you.Client.Services.States
 @inject HttpClient httpClient
 @inject ReservationStateService ReservationStateService
+@inject LanguageStateService LanguageStateService
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
@@ -19,5 +20,6 @@
     protected override async Task OnInitializedAsync()
     {
         ReservationStateService.SetCheckedInReservationIds(await httpClient.GetFromJsonAsync<List<string>>("api/reservations/GetCheckedInReservationIds"));
+        LanguageStateService.SetCurrentLang(LanguageStateService.DefaultLang);
     }
 }

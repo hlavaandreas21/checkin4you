@@ -7,9 +7,9 @@ using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using System.Text;
 
-namespace checkin4you.Client.Pages
+namespace checkin4you.Client.Pages.EN
 {
-    public partial class WithoutReservationPage
+    public partial class WithReservationPageEN : ComponentBase
     {
         [Inject]
         HttpClient HttpClient { get; set; } = default!;
@@ -28,10 +28,6 @@ namespace checkin4you.Client.Pages
 
         ReservationDTO? Reservation { get; set; }
 
-        List<PossibleReservation>? PossibleReservations { get; set; }
-
-        private List<string>? ResTexts { get; set; }
-
         private bool ReservationsLoaded { get; set; } = false;
 
         private bool ShowSpinner { get; set; } = false;
@@ -40,50 +36,36 @@ namespace checkin4you.Client.Pages
 
         private string DisplayNoneCssClass = "";
 
-        public WithoutReservationPage() { }
-
-        protected override async Task OnInitializedAsync()
-        {
-            PossibleReservations = (await ReservationService.GetAllReservationsForTodayAsync()).ToList();
-            var checkedInReservationIds = ReservationStateService.CheckedInReservationIds;
-            PossibleReservations.RemoveAll(pr => checkedInReservationIds.Contains(pr.IdReservation));
-            ResTexts = PossibleReservations.Select(pr => pr.ResText.ToLower()).ToList();
-        }
+        public WithReservationPageEN() { }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             base.OnAfterRender(firstRender);
 
-            await JSRuntime.InvokeVoidAsync("eval", $@"document.getElementById(""guestName"").focus()");
+            await JSRuntime.InvokeVoidAsync("eval", $@"document.getElementById(""reservationNumber"").focus()");
         }
 
-        private async Task OnGuestNameInput(string value)
+        private async Task OnReservationIdInput(string value)
         {
-            if (value.Length > 4)
-            {
-                ReservationsLoaded = false;
+            Reservation = new ReservationDTO();
+            ReservationsLoaded = false;
 
+            if (!string.IsNullOrEmpty(value) && value.Length == 10)
+            {
                 ShowSpinner = true;
 
                 await Task.Delay(500);
 
-                var matches = ResTexts.Where(rt => rt.Contains(value.ToLower())).Distinct().ToList();
+                Reservation = await ReservationService.GetReservationByExternalResIdAsync(value);
+                var checkedInReservationIds = ReservationStateService.CheckedInReservationIds;
 
-                if (matches.Any() && matches.Count == 1)
+                if (!Reservation.IsComplete) Reservation = null;
+                if (Reservation != null)
                 {
-                    string idReservations = "";
-
-                    var reservationsToLoad = PossibleReservations.Where(pr => pr.ResText.ToLower().Contains(matches.First())).Select(pr => pr.IdReservation).ToList();
-
-                    foreach (var rtl in reservationsToLoad)
+                    foreach (var idReservation in Reservation.Idreservations)
                     {
-                        idReservations += rtl + "&";
+                        if (checkedInReservationIds.Contains(idReservation)) Reservation = null;
                     }
-
-                    idReservations = idReservations.Remove(idReservations.Length - 1, 1);
-
-                    Reservation = await ReservationService.GetReservationByIdReservationsAsync(idReservations);
-                    if (!Reservation.IsComplete) Reservation = null;
                 }
 
                 ShowSpinner = false;
@@ -93,9 +75,9 @@ namespace checkin4you.Client.Pages
                 ReservationsLoaded = true;
 
                 if (Reservation != null) DisplayNoneCssClass = "d-none";
-
-                await InvokeAsync(StateHasChanged);
             }
+
+            await InvokeAsync(StateHasChanged);
         }
 
         private async Task AddGuest()
@@ -120,7 +102,7 @@ namespace checkin4you.Client.Pages
 
         private void Cancel()
         {
-            NavigationManager.NavigateTo("/home");
+            NavigationManager.NavigateTo("/en/home");
         }
 
         private void TryCheckIn()
@@ -150,7 +132,8 @@ namespace checkin4you.Client.Pages
                 };
 
                 HttpClient.PostAsJsonAsync<MailRequest>("api/Email", mailRequest);
-                NavigationManager.NavigateTo("/checkedIn");
+
+                NavigationManager.NavigateTo("/en/checkedIn");
             }
             else ShowInvalidMessage = true;
         }
@@ -219,7 +202,7 @@ namespace checkin4you.Client.Pages
             if (reservation.Guests.Count > 1)
             {
                 sb.AppendLine("Mitreisende:");
-                foreach(var guest in reservation.Guests.Skip(1))
+                foreach (var guest in reservation.Guests.Skip(1))
                 {
                     sb.AppendLine(guest.Name1 + " " + guest.Name2 + ", Geburtsdatum: " + guest.Birthdate?.ToString("dd.MM.yyyy"));
                 }

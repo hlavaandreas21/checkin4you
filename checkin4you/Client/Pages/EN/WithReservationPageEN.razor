@@ -1,4 +1,4 @@
-﻿@page "/checkin/withReservation"
+﻿@page "/en/checkin/withReservation"
 
 <div class="d-flex flex-column p-4 vh-100 w-100" style="overflow: auto">
     <div class="d-flex">
@@ -6,8 +6,8 @@
             <div class="@DisplayNoneCssClass">
                 <RadzenCard class="w-100" Style="background-color: #40A535; color: white; height: fit-content;">
                     <div class="d-flex flex-column align-items-start justify-content-center">
-                        <h1>Bitte geben Sie Ihre Buchungsnummer ein!</h1>
-                        <RadzenTextBox Placeholder="Buchungsnummer..."
+                        <h1>Please enter your booking number!</h1>
+                        <RadzenTextBox Placeholder="Booking number..."
                                        @oninput="@(args => OnReservationIdInput(args.Value.ToString()))"
                                        class="w-100"
                                        id="reservationNumber" />
@@ -25,21 +25,21 @@
                 <RadzenCard class="w-100">
                     <div class="d-flex">
                         <div>
-                            <h2>Bitte überprüfen und vervollständigen Sie Ihre Daten!</h2>
-                            <h4>Buchungsnummer @Reservation.ExternalResIds.First()</h4>
-                            <h4>Aufenthalt von @Reservation.ArrivalDate.Value.ToString("dd.MM.yyyy") bis @Reservation.DepartureDate.Value.ToString("dd.MM.yyyy")</h4>  
+                            <h2>Please check and complete your data!</h2>
+                            <h4>Booking number @Reservation.ExternalResIds.First()</h4>
+                            <h4>Visit from @Reservation.ArrivalDate.Value.ToString("dd.MM.yyyy") to @Reservation.DepartureDate.Value.ToString("dd.MM.yyyy")</h4>  
                         </div>
                         @if(ReservationsLoaded && Reservation != null)
                         {
                             <div class="ms-auto" />
                             <div class="me-4">
                                 <RadzenButton Style="background-color: #9e2b25; height: 100%" Click="@Cancel">
-                                    Abbrechen
+                                    Cancel
                                 </RadzenButton>
                             </div>
                             <div>
                                 <RadzenButton Style="background-color: #40A535; height: 100%" Click="@TryCheckIn">
-                                    Jetzt einchecken!
+                                    Check-in now!
                                 </RadzenButton>
                             </div>
                         }        
@@ -53,40 +53,40 @@
                                               
                     @if(Reservation.Guests != null && Reservation.Guests.Count() > 0)
                     {
-                        <h4>Hauptgast</h4>
+                        <h4>Main guest</h4>
                         <div class="d-flex flex-column w-100 mb-4">
                             <div class="d-flex w-100 mb-2">
-                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Name1" Placeholder="Name*" class="me-2 w-50" />
-                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Name2" Placeholder="Vorname*" class="w-50" />
+                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Name1" Placeholder="Surname*" class="me-2 w-50" />
+                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Name2" Placeholder="Name*" class="w-50" />
                             </div>
                             <div class="d-flex w-100">
-                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Street" Placeholder="Adresse*" class="w-100 mb-2" />
+                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Street" Placeholder="Address*" class="w-100 mb-2" />
                             </div>
                             <div class="d-flex w-100 mb-2">
-                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().ZipCode" Placeholder="Postleitzahl*" class="me-2" Style="width: 33.3%" />
-                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().CityName" Placeholder="Stadt*" class="me-2" Style="width: 33.3%" />
-                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().StateName" Placeholder="Land*" Style="width: 33.3%" />
+                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().ZipCode" Placeholder="Postal code*" class="me-2" Style="width: 33.3%" />
+                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().CityName" Placeholder="City*" class="me-2" Style="width: 33.3%" />
+                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().StateName" Placeholder="State*" Style="width: 33.3%" />
                             </div>
                             <div class="d-flex w-100">
-                                <RadzenDatePicker TValue="DateTime?" @bind-Value="@Reservation.Guests.First().Birthdate" Placeholder="Geburtsdatum*" class="me-2" DateFormat="dd.MM.yyyy" Style="width: 33.3%" />
-                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Phone" Placeholder="Telefonnummer*" class="me-2" Style="width: 33.3%" />
+                                <RadzenDatePicker TValue="DateTime?" @bind-Value="@Reservation.Guests.First().Birthdate" Placeholder="Birthdate*" class="me-2" DateFormat="dd.MM.yyyy" Style="width: 33.3%" />
+                                <RadzenTextBox @bind-Value="@Reservation.Guests.First().Phone" Placeholder="Phone number*" class="me-2" Style="width: 33.3%" />
                                 <RadzenTextBox @bind-Value="@Reservation.Guests.First().Email" Placeholder="E-Mail" Style="width: 33.3%" />
                             </div>
                         </div>
-                        <h4>Mitreisende</h4>
+                        <h4>Additional guests</h4>
                         @foreach(var guest in Reservation.Guests.Skip(1))
                         {
                             <div class="d-flex">
                                 <div class="d-flex w-100 mb-2">
-                                    <RadzenTextBox @bind-Value="@guest.Name1" Placeholder="Name*" class="me-2" Style="width: 33.3%" />
-                                    <RadzenTextBox @bind-Value="@guest.Name2" Placeholder="Vorname*" class="me-2" Style="width: 33.3%" />
-                                    <RadzenDatePicker TValue="DateTime?" @bind-Value="@guest.Birthdate" Placeholder="Geburtsdatum*" DateFormat="dd.MM.yyyy" Style="width: 33.3%" Max="DateTime.Today" />
+                                    <RadzenTextBox @bind-Value="@guest.Name1" Placeholder="Surname*" class="me-2" Style="width: 33.3%" />
+                                    <RadzenTextBox @bind-Value="@guest.Name2" Placeholder="Name*" class="me-2" Style="width: 33.3%" />
+                                    <RadzenDatePicker TValue="DateTime?" @bind-Value="@guest.Birthdate" Placeholder="Birthdate*" DateFormat="dd.MM.yyyy" Style="width: 33.3%" Max="DateTime.Today" />
                                 </div>
                             </div>
                         }
                         <RadzenButton Style="background-color: #1e1e1e"
                                         Click="@AddGuest">
-                            Mitreisenden hinzufügen
+                            Add guest
                         </RadzenButton>
                     }
                 </RadzenCard>
@@ -94,31 +94,31 @@
             @if(ReservationsLoaded && (Reservation == null || Reservation.Idreservations == null || !Reservation.Idreservations.Any()))
             {
                 <RadzenCard class="mt-4">
-                    <h1>Keine Buchung gefunden!</h1>
-                    <span>Bitte geben Sie eine gültige Buchungsnummer ein!</span>
+                    <h1>No reservation found!</h1>
+                    <span>Please enter a valid booking number!</span>
                 </RadzenCard>
             }
             @if (ReservationsLoaded && Reservation != null)
             {
-                <span class="mt-2">Pflichtfelder sind mit einem * markiert.</span>
+                <span class="mt-2">Required fields are marked with an *.</span>
             }
             <div class="@DisplayNoneCssClass">
 
                 <RadzenCard class="mt-4">
-                    <h1>Benötigen Sie Hilfe?</h1>
-                    <span>Gerne helfen Ihnen unserer Mitarbeiter im Restaurant weiter oder Sie erreichen uns unter +43 7723 20614</span>
+                    <h1>Do you need help?</h1>
+                    <span>Our staff in the restaurant will be happy to help you, or you can reach us on +43 7723 20614</span>
                 </RadzenCard>
             </div>
         </div>
         
         <div class="d-flex flex-column @DisplayNoneCssClass">
             <RadzenCard Style="background-color: #9e2b25; color: white; height: fit-content; min-width: 410px">
-                <h1>Wo ist meine Buchungsnummer?</h1>
-                <p>Als Sie Ihren Aufenthalt gebucht haben wurde Ihnen Ihre Buchungsnummer von Ihrem Reiseanbieter per Mail zugesandt.</p>
-                <p class="mt-2">Die Buchungsnummer besteht aus 10 Ziffern.</p>
+                <h1>Where is my booking number?</h1>
+                <p>When you booked your stay, your booking number was sent to you by email from your travel provider.</p>
+                <p class="mt-2">The booking number consists of 10 digits.</p>
             </RadzenCard>
             <RadzenButton Style="background-color: #1e1e1e; height: 100%; width: 100%" Click="@Cancel" class="p-4 mt-4">
-                Zurück zur Startseite!
+                Back to home page!
             </RadzenButton>
         </div>
     </div>

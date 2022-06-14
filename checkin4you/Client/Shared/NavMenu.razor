@@ -1,4 +1,6 @@
-﻿@inject NavigationManager NavigationManager
+﻿@using checkin4you.Client.Services.States
+@inject NavigationManager NavigationManager
+@inject LanguageStateService LanguageStateService
 
 <div class="sidebar @NavMenuCssClass">
     
@@ -23,19 +25,19 @@
         }
     </nav>
     <div class="sidebar-bottom d-flex flex-column">
-        <div class="d-flex flex-row align-items-center mb-3 ms-3 nav-link">
+        <div class="d-flex flex-row align-items-center mb-3 ms-3 nav-link" @onclick="@(() => SetLanguage("de"))">
             <SVGFlag CountryCode="DE" FlagType="FlagType.Square" Width="40" Height="40" style="border-radius: 50%"></SVGFlag>
             <span class="label @CollapseLabelCssClass">Deutsch</span>
         </div>
-        <div class="d-flex flex-row align-items-center mb-3 ms-3 nav-link">
+        <div class="d-flex flex-row align-items-center mb-3 ms-3 nav-link" @onclick="@(() => SetLanguage("en"))">
             <SVGFlag CountryCode="GB" FlagType="FlagType.Square" Width="40" Height="40" style="border-radius: 50%"></SVGFlag>
             <span class="label @CollapseLabelCssClass">English</span>
         </div>
-        <div class="d-flex flex-row align-items-center mb-3 ms-3 nav-link">
+        <div class="d-flex flex-row align-items-center mb-3 ms-3 nav-link" @onclick="@(() => SetLanguage("it"))">
             <SVGFlag CountryCode="IT" FlagType="FlagType.Square" Width="40" Height="40" style="border-radius: 50%"></SVGFlag>
             <span class="label @CollapseLabelCssClass">Italiano</span>
         </div>        
-        <div class="d-flex flex-row align-items-center mb-3 ms-3 nav-link">
+        <div class="d-flex flex-row align-items-center mb-3 ms-3 nav-link" @onclick="@(() => SetLanguage("nl"))">
             <SVGFlag CountryCode="NL" FlagType="FlagType.Square" Width="40" Height="40" style="border-radius: 50%"></SVGFlag>
             <span class="label @CollapseLabelCssClass">Nederlands</span>
         </div>
@@ -54,8 +56,13 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
+    public void SetLanguage(string language)
+    {
+        LanguageStateService.SetCurrentLang(language);
+    }
+
     public void NavigateToHome()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/" + LanguageStateService.CurrentLang + "/home");
     }
 }

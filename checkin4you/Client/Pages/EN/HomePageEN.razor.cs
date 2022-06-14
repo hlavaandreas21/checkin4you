@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace checkin4you.Client.Pages
+namespace checkin4you.Client.Pages.EN
 {
-    public partial class HomePage
+    public partial class HomePageEN
     {
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
 
         private void NavigateToCheckinPage()
         {
-            NavigationManager.NavigateTo("/checkin");
+            NavigationManager.NavigateTo("/en/checkin");
         }
     }
 }

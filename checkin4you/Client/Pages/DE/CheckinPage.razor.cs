@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace checkin4you.Client.Pages
+namespace checkin4you.Client.Pages.DE
 {
     public partial class CheckinPage
     {
