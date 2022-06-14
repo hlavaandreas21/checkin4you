@@ -1,0 +1,68 @@
+﻿@page "/it/checkedIn"
+
+<div class="d-flex flex-column w-100 h-100">
+    <div class="d-flex w-100" style="height: 45%">
+        <div class="w-50 ms-4 mt-4 me-4 mb-4">
+            <RadzenCard class="d-flex flex-column h-100" Style="background-color: #40A535; color: white">
+                <h1>Hai effettuato il check-in con successo!</h1>
+                @if (Rooms != null && Rooms.Any() && Rooms.Count == 1)
+                {
+                    <h3>La tua stanza è:</h3>
+                    <div class="room-container">
+                        <div class="room">
+                            @Rooms.First()
+                        </div>
+                    </div>
+                }
+                else if (Rooms != null && Rooms.Any() && Rooms.Count > 1)
+                {
+                    <h3>Le tue stanze sono:</h3>
+                    <div class="@(Rooms.Count > 4 ? "room-container-small" : "room-container")">
+                        @foreach(var room in Rooms)
+                        {
+                            <div class="@(Rooms.Count > 4 ? "room-small" : "room")">
+                                @room
+                            </div>
+                        }
+                    </div>
+                }
+            </RadzenCard>
+        </div>
+        <div class="w-50 ms-0 mt-4 me-4 mb-4">
+            <RadzenCard class="d-flex h-100" Style="background-color: #1e1e1e; color: white">
+                <h1>Vi auguriamo un piacevole soggiorno!</h1>
+                <div class="mt-auto"></div>
+                <h3>Hai domande o vuoi contattarci?</h3>
+                <div class="text">Il nostro personale del ristorante sarà lieto di aiutarti, oppure puoi contattarci al +43 7723 20614</div>
+            </RadzenCard>
+        </div>
+    </div>
+    <div class="d-flex w-100" style="height: 45%">
+        <div class="w-50 ms-4 mt-0 me-4 mb-4">
+            <video class="checkInVideo" loop autoplay muted>
+                <source src="/videos/video.mp4" type="video/mp4">
+                Si è verificato un errore durante il caricamento del video.
+            </video>
+        </div>
+        <div class="w-50 ms-0 mt-0 me-4 mb-4">
+            <RadzenCard class="d-flex flex-column h-100" Style="background-color: #1e1e1e; color: white">
+                <h3>Orari della colazione</h3>
+                <div class="small-heading mb-4">Dalle 07.00 alle 11.00</div>
+                <h3>Orari di apertura del ristorante</h3>
+                <div class="d-flex flex-column">
+                    <div class="small-heading mb-1">Dal martedì al venerdì</div>
+                    <div class="text mb-1">Dalle 17.00 alle 22.30 (cucina calda fino alle 22.00)</div>
+                    <div class="small-heading mb-1">Sabato</div>
+                    <div class="text mb-1">Dalle 11.00 alle 14.00 e dalle 17.00 alle 22.30 (cucina calda fino alle 22.00)</div>
+                    <div class="small-heading mb-1">Domeniche e festiv</div>
+                    <div class="text">Dalle 11.00 alle 14.00 e dalle 17.00 alle 22.00 (cucina calda fino alle 21.00)</div>
+                </div>
+            </RadzenCard>
+        </div>
+    </div>
+    <div class="d-flex w-100 align-items-center justify-content-center px-4 pb-4" style="height: 10%">
+        <RadzenButton class="w-100 h-100" Style="background-color: #1e1e1e" Click="@BackToHome">
+            Torna alla home page!
+        </RadzenButton>
+    </div>
+</div>
