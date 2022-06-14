@@ -20,7 +20,7 @@ namespace checkin4you.Client.Pages.DE
 
         private void BackToHome()
         {
-            NavigationManager.NavigateTo("/home");
+            NavigationManager.NavigateTo("/de/home");
         }
 
         public void Dispose()

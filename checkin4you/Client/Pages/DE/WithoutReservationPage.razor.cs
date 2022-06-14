@@ -120,7 +120,7 @@ namespace checkin4you.Client.Pages.DE
 
         private void Cancel()
         {
-            NavigationManager.NavigateTo("/home");
+            NavigationManager.NavigateTo("/de/home");
         }
 
         private void TryCheckIn()
@@ -150,7 +150,7 @@ namespace checkin4you.Client.Pages.DE
                 };
 
                 HttpClient.PostAsJsonAsync<MailRequest>("api/Email", mailRequest);
-                NavigationManager.NavigateTo("/checkedIn");
+                NavigationManager.NavigateTo("/de/checkedIn");
             }
             else ShowInvalidMessage = true;
         }

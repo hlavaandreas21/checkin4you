@@ -9,12 +9,12 @@ namespace checkin4you.Client.Pages.DE
 
         private void NavigateToWithReservationPage()
         {
-            NavigationManager.NavigateTo("/checkin/withReservation");
+            NavigationManager.NavigateTo("/de/checkin/withReservation");
         }
 
         private void NavigateToWithoutReservationPage()
         {
-            NavigationManager.NavigateTo("/checkin/withoutReservation");
+            NavigationManager.NavigateTo("/de/checkin/withoutReservation");
         }
     }
 }

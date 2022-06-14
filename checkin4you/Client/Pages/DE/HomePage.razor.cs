@@ -9,7 +9,7 @@ namespace checkin4you.Client.Pages.DE
 
         private void NavigateToCheckinPage()
         {
-            NavigationManager.NavigateTo("/checkin");
+            NavigationManager.NavigateTo("/de/checkin");
         }
     }
 }

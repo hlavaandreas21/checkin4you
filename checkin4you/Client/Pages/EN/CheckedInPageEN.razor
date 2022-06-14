@@ -4,10 +4,10 @@
     <div class="d-flex w-100" style="height: 45%">
         <div class="w-50 ms-4 mt-4 me-4 mb-4">
             <RadzenCard class="d-flex flex-column h-100" Style="background-color: #40A535; color: white">
-                <h1>Sie haben erfolgreich eingecheckt!</h1>
+                <h1>You have successfully checked in!</h1>
                 @if (Rooms != null && Rooms.Any() && Rooms.Count == 1)
                 {
-                    <h3>Ihr Zimmer ist:</h3>
+                    <h3>Your room is:</h3>
                     <div class="room-container">
                         <div class="room">
                             @Rooms.First()
@@ -16,7 +16,7 @@
                 }
                 else if (Rooms != null && Rooms.Any() && Rooms.Count > 1)
                 {
-                    <h3>Ihre Zimmer sind:</h3>
+                    <h3>Your rooms are:</h3>
                     <div class="@(Rooms.Count > 4 ? "room-container-small" : "room-container")">
                         @foreach(var room in Rooms)
                         {
@@ -30,10 +30,10 @@
         </div>
         <div class="w-50 ms-0 mt-4 me-4 mb-4">
             <RadzenCard class="d-flex h-100" Style="background-color: #1e1e1e; color: white">
-                <h1>Wir wünschen Ihnen einen angenehmen Aufenthalt!</h1>
+                <h1>We wish you a pleasant stay!</h1>
                 <div class="mt-auto"></div>
-                <h3>Sie haben Fragen oder möchten uns kontaktieren?</h3>
-                <div class="text">Gerne helfen Ihnen unserer Mitarbeiter im Restaurant weiter oder Sie erreichen uns unter +43 7723 20614</div>
+                <h3>Do you have any questions or would you like to contact us?</h3>
+                <div class="text">Our staff in the restaurant will be happy to help you, or you can reach us on +43 7723 20614</div>
             </RadzenCard>
         </div>
     </div>
@@ -41,28 +41,28 @@
         <div class="w-50 ms-4 mt-0 me-4 mb-4">
             <video class="checkInVideo" loop autoplay muted>
                 <source src="/videos/video.mp4" type="video/mp4">
-                Beim Laden des Videos ist ein Fehler aufgetreten.
+                There was an error loading the video.
             </video>
         </div>
         <div class="w-50 ms-0 mt-0 me-4 mb-4">
             <RadzenCard class="d-flex flex-column h-100" Style="background-color: #1e1e1e; color: white">
-                <h3>Frühstückszeiten</h3>
-                <div class="small-heading mb-4">07.00 bis 11.00 Uhr</div>
-                <h3>Öffnungszeiten Restaurant</h3>
+                <h3>Breakfast times</h3>
+                <div class="small-heading mb-4">07.00 AM to 11.00 AM</div>
+                <h3>Restaurant opening hours</h3>
                 <div class="d-flex flex-column">
-                    <div class="small-heading mb-1">Dienstag bis Freitag </div>
-                    <div class="text mb-1">17.00 bis 22.30 Uhr (warme Küche bis 22.00 Uhr)</div>
-                    <div class="small-heading mb-1">Samstag</div>
-                    <div class="text mb-1">11.00 bis 14.00 Uhr und 17:00 bis 22:30 Uhr (warme Küche bis 22.00 Uhr)</div>
-                    <div class="small-heading mb-1">Sonn- und Feiertage</div>
-                    <div class="text">11.00 bis 14.00 Uhr und 17.00 bis 22.00 Uhr (warme Küche bis 21.00 Uhr)</div>
+                    <div class="small-heading mb-1">Tuesday to Friday</div>
+                    <div class="text mb-1">5.00 PM to 10.30 PM (kitchen closes 10.00 PM)</div>
+                    <div class="small-heading mb-1">Saturdays</div>
+                    <div class="text mb-1">11.00 AM to 2.00 PM and 5.00 PM to 10.30 PM Uhr (kitchen closes 10.00 PM)</div>
+                    <div class="small-heading mb-1">Sundays and holidays</div>
+                    <div class="text">11.00 AM to 2.00 PM and 5.00 PM to 10.00 PM (kitchen closes 9.00 PM)</div>
                 </div>
             </RadzenCard>
         </div>
     </div>
     <div class="d-flex w-100 align-items-center justify-content-center px-4 pb-4" style="height: 10%">
         <RadzenButton class="w-100 h-100" Style="background-color: #1e1e1e" Click="@BackToHome">
-            Zurück zur Startseite!
+            Back to home page!
         </RadzenButton>
     </div>
 </div>
