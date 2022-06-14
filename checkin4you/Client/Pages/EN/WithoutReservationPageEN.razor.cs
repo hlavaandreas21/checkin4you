@@ -219,7 +219,7 @@ namespace checkin4you.Client.Pages.EN
             if (reservation.Guests.Count > 1)
             {
                 sb.AppendLine("Mitreisende:");
-                foreach(var guest in reservation.Guests.Skip(1))
+                foreach (var guest in reservation.Guests.Skip(1))
                 {
                     sb.AppendLine(guest.Name1 + " " + guest.Name2 + ", Geburtsdatum: " + guest.Birthdate?.ToString("dd.MM.yyyy"));
                 }

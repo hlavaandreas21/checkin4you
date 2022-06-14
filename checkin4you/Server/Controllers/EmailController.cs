@@ -1,8 +1,6 @@
 ﻿using checkin4you.Server.Services.Interfaces;
 using checkin4you.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace checkin4you.Server.Controllers
 {

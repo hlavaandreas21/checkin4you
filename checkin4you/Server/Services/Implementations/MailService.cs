@@ -2,7 +2,6 @@
 using checkin4you.Server.Settings;
 using checkin4you.Shared.Models;
 using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
