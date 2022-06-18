@@ -1,0 +1,68 @@
+﻿@page "/nl/checkedIn"
+
+<div class="d-flex flex-column w-100 h-100">
+    <div class="d-flex w-100" style="height: 45%">
+        <div class="w-50 ms-4 mt-4 me-4 mb-4">
+            <RadzenCard class="d-flex flex-column h-100" Style="background-color: #40A535; color: white">
+                <h1>U bent succesvol ingecheckt!</h1>
+                @if (Rooms != null && Rooms.Any() && Rooms.Count == 1)
+                {
+                    <h3>Uw kamer is:</h3>
+                    <div class="room-container">
+                        <div class="room">
+                            @Rooms.First()
+                        </div>
+                    </div>
+                }
+                else if (Rooms != null && Rooms.Any() && Rooms.Count > 1)
+                {
+                    <h3>Uw kamers zijn:</h3>
+                    <div class="@(Rooms.Count > 4 ? "room-container-small" : "room-container")">
+                        @foreach(var room in Rooms)
+                        {
+                            <div class="@(Rooms.Count > 4 ? "room-small" : "room")">
+                                @room
+                            </div>
+                        }
+                    </div>
+                }
+            </RadzenCard>
+        </div>
+        <div class="w-50 ms-0 mt-4 me-4 mb-4">
+            <RadzenCard class="d-flex h-100" Style="background-color: #1e1e1e; color: white">
+                <h1>Wij wensen u een prettig verblijf!</h1>
+                <div class="mt-auto"></div>
+                <h3>Heeft u vragen of wilt u contact met ons opnemen?</h3>
+                <div class="text">Onze medewerkers in het restaurant helpen u graag verder, of u kunt ons bereiken op +43 7723 20614</div>
+            </RadzenCard>
+        </div>
+    </div>
+    <div class="d-flex w-100" style="height: 45%">
+        <div class="w-50 ms-4 mt-0 me-4 mb-4">
+            <video class="checkInVideo" loop autoplay muted>
+                <source src="/videos/video.mp4" type="video/mp4">
+                Er is een fout opgetreden bij het laden van de video.
+            </video>
+        </div>
+        <div class="w-50 ms-0 mt-0 me-4 mb-4">
+            <RadzenCard class="d-flex flex-column h-100" Style="background-color: #1e1e1e; color: white">
+                <h3>Ontbijttijden</h3>
+                <div class="small-heading mb-4">07.00 uur tot 11.00 uur</div>
+                <h3>Openingstijden restaurant</h3>
+                <div class="d-flex flex-column">
+                    <div class="small-heading mb-1">dinsdag tot vrijdag</div>
+                    <div class="text mb-1">17.00 uur tot 22.30 uur (keuken sluit 22.00 uur)</div>
+                    <div class="small-heading mb-1">Zaterdagen</div>
+                    <div class="text mb-1">11.00 uur tot 14.00 uur en 17.00 uur tot 22.30 uur Uhr (keuken sluit 22.00 uur)</div>
+                    <div class="small-heading mb-1">Zon- en feestdagen</div>
+                    <div class="text">11.00 uur tot 14.00 uur en 17.00 uur tot 22.00 uur (keuken sluit 21.00 uur)</div>
+                </div>
+            </RadzenCard>
+        </div>
+    </div>
+    <div class="d-flex w-100 align-items-center justify-content-center px-4 pb-4" style="height: 10%">
+        <RadzenButton class="w-100 h-100" Style="background-color: #1e1e1e" Click="@BackToHome">
+            Terug naar de startpagina!
+        </RadzenButton>
+    </div>
+</div>

@@ -8,7 +8,7 @@
         <div class="d-flex flex-row align-items-center mt-3 ms-3 nav-link">
             <div class="d-flex flex-row align-items-center" @onclick="NavigateToHome">
                 <RadzenIcon Icon="home" Style="color: white; font-size: 2.5rem" />
-                <span class="label @CollapseLabelCssClass">Startseite</span>
+                <span class="label @CollapseLabelCssClass">@HomePageString</span>
             </div>
             @if(!collapseNavMenu)
             {
@@ -47,6 +47,8 @@
 @code {
     private bool collapseNavMenu = true;
 
+    private string HomePageString = "Startseite";
+
     private string? CollapseIconCssClass => collapseNavMenu ? "keyboard_double_arrow_right" : "keyboard_double_arrow_left";
     private string? CollapseLabelCssClass => collapseNavMenu ? "d-none" : null;
     private string? NavMenuCssClass => collapseNavMenu ? "collapsed" : null;
@@ -58,6 +60,21 @@
 
     public void SetLanguage(string language)
     {
+        switch (language)
+        {
+            case "de": 
+                HomePageString = "Startseite";
+                break;
+            case "en":
+                HomePageString = "Home page";
+                break;
+            case "it":
+                HomePageString = "Pagina iniziale";
+                break;
+            case "nl":
+                HomePageString = "Startpagina";
+                break;
+        }
         LanguageStateService.SetCurrentLang(language);
     }
 
