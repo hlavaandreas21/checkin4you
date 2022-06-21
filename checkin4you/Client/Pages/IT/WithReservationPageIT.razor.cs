@@ -100,6 +100,13 @@ namespace checkin4you.Client.Pages.IT
             await InvokeAsync(StateHasChanged);
         }
 
+        private async Task RemoveGuest(GuestDTO? guest)
+        {
+            Reservation.Guests.Remove(guest);
+
+            await InvokeAsync(StateHasChanged);
+        }
+
         private void Cancel()
         {
             NavigationManager.NavigateTo("/it/home");
