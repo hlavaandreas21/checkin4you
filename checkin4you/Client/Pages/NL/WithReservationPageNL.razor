@@ -102,6 +102,32 @@
                     <span>Voer een geldig boekingsnummer in!</span>
                 </RadzenCard>
             }
+            @if (ReservationsLoaded && CheckedInReservation != null)
+            {
+                <RadzenCard class="mt-4">
+                    <h1>Je bent al ingecheckt!</h1>
+                    @if (CheckedInReservation.ItemCodes.Count > 1)
+                    {
+                        <span>Uw kamers zijn:</span>
+                        @foreach(var room in CheckedInReservation.ItemCodes)
+                        {
+                            <div class="room">
+                                @room
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span>Uw kamer is:</span>
+                        <div class="d-flex">
+                            <div class="room">
+                                @CheckedInReservation.ItemCodes.First()
+                            </div>
+                        </div>
+                        
+                    }
+                </RadzenCard>
+            }
             @if (ReservationsLoaded && Reservation != null)
             {
                 <span class="mt-2">Verplichte velden zijn gemarkeerd met een *.</span>

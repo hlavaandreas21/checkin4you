@@ -28,6 +28,8 @@ namespace checkin4you.Client.Pages.NL
 
         ReservationDTO? Reservation { get; set; }
 
+        ReservationDTO? CheckedInReservation { get; set; }
+
         private bool ReservationsLoaded { get; set; } = false;
 
         private bool ShowSpinner { get; set; } = false;
@@ -47,7 +49,8 @@ namespace checkin4you.Client.Pages.NL
 
         private async Task OnReservationIdInput(string value)
         {
-            Reservation = new ReservationDTO();
+            Reservation = null;
+            CheckedInReservation = null;
             ReservationsLoaded = false;
 
             if (!string.IsNullOrEmpty(value) && value.Length == 10)
@@ -64,7 +67,11 @@ namespace checkin4you.Client.Pages.NL
                 {
                     foreach (var idReservation in Reservation.Idreservations)
                     {
-                        if (checkedInReservationIds.Contains(idReservation)) Reservation = null;
+                        if (checkedInReservationIds.Contains(idReservation))
+                        {
+                            CheckedInReservation = Reservation;
+                            Reservation = null;
+                        }
                     }
                 }
 
@@ -109,7 +116,7 @@ namespace checkin4you.Client.Pages.NL
 
         private void Cancel()
         {
-            NavigationManager.NavigateTo("/nl/home");
+            NavigationManager.NavigateTo("/de/home");
         }
 
         private void TryCheckIn()
@@ -140,7 +147,7 @@ namespace checkin4you.Client.Pages.NL
 
                 HttpClient.PostAsJsonAsync<MailRequest>("api/Email", mailRequest);
 
-                NavigationManager.NavigateTo("/nl/checkedIn");
+                NavigationManager.NavigateTo("/de/checkedIn");
             }
             else ShowInvalidMessage = true;
         }

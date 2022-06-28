@@ -1,5 +1,6 @@
 ﻿@page "/it/checkin/withReservation"
 
+
 <div class="d-flex flex-column p-4 vh-100 w-100" style="overflow: auto">
     <div class="d-flex">
         <div class="d-flex flex-column @((Reservation != null && Reservation.Idreservations != null && Reservation.Idreservations.Any()) ? "w-100" : "w-75 me-4")">
@@ -100,6 +101,32 @@
                 <RadzenCard class="mt-4">
                     <h1>Nessuna prenotazione trovata!</h1>
                     <span>Inserisci un numero di prenotazione valido!</span>
+                </RadzenCard>
+            }
+            @if (ReservationsLoaded && CheckedInReservation != null)
+            {
+                <RadzenCard class="mt-4">
+                    <h1>Hai già effettuato il check-in!</h1>
+                    @if (CheckedInReservation.ItemCodes.Count > 1)
+                    {
+                        <span>Le tue stanze sono:</span>
+                        @foreach(var room in CheckedInReservation.ItemCodes)
+                        {
+                            <div class="room">
+                                @room
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span>La tua stanza è:</span>
+                        <div class="d-flex">
+                            <div class="room">
+                                @CheckedInReservation.ItemCodes.First()
+                            </div>
+                        </div>
+                        
+                    }
                 </RadzenCard>
             }
             @if (ReservationsLoaded && Reservation != null)
