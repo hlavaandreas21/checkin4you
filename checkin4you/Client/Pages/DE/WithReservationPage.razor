@@ -96,11 +96,37 @@
                     }
                 </RadzenCard>
             }
-            @if(ReservationsLoaded && (Reservation == null || Reservation.Idreservations == null || !Reservation.Idreservations.Any()))
+            @if(ReservationsLoaded && (Reservation == null || Reservation.Idreservations == null || !Reservation.Idreservations.Any()) && CheckedInReservation == null)
             {
                 <RadzenCard class="mt-4">
                     <h1>Keine Buchung gefunden!</h1>
                     <span>Bitte geben Sie eine gültige Buchungsnummer ein!</span>
+                </RadzenCard>
+            }
+            @if (ReservationsLoaded && CheckedInReservation != null)
+            {
+                <RadzenCard class="mt-4">
+                    <h1>Sie haben bereits eingecheckt!</h1>
+                    @if (CheckedInReservation.ItemCodes.Count > 1)
+                    {
+                        <span>Ihre Zimmer sind</span>
+                        @foreach(var room in CheckedInReservation.ItemCodes)
+                        {
+                            <div class="room">
+                                @room
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span>Ihr Zimmer ist:</span>
+                        <div class="d-flex">
+                            <div class="room">
+                                @CheckedInReservation.ItemCodes.First()
+                            </div>
+                        </div>
+                        
+                    }
                 </RadzenCard>
             }
             @if (ReservationsLoaded && Reservation != null)

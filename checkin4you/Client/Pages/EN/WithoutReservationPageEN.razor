@@ -2,7 +2,7 @@
 
 <div class="d-flex flex-column p-4 vh-100 w-100" style="overflow: auto">
     <div class="d-flex">
-        <div class="d-flex flex-column w-100 @((Reservation != null && Reservation.Idreservations != null && Reservation.Idreservations.Any()) ? "" : "me-4")">
+        <div class="d-flex flex-column w-100">
             <div class="@DisplayNoneCssClass">
                 <RadzenCard class="w-100" Style="background-color: #40A535; color: white; height: fit-content;">
                     <div class="d-flex flex-column align-items-start justify-content-center">
@@ -102,6 +102,33 @@
             {
                 <RadzenCard class="mt-4">
                     <h1>No reservation found!</h1>
+                </RadzenCard>
+            }
+            @if (ReservationsLoaded && CheckedInReservation != null)
+            {
+                <RadzenCard class="mt-4">
+                    <h1>You have already checked in!</h1>
+                    @if (CheckedInReservation.ItemCodes.Count > 1)
+                    {
+                        <h3>Your rooms are:</h3>
+                        <div class="d-flex">
+                            @foreach(var room in CheckedInReservation.ItemCodes)
+                            {
+                                <div class="room">
+                                    @room
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <h3>Your room is:</h3>
+                        <div class="d-flex">
+                            <div class="room">
+                                @CheckedInReservation.ItemCodes.First()
+                            </div>
+                        </div>
+                    }
                 </RadzenCard>
             }
             <div class="d-flex @DisplayNoneCssClass mt-4">

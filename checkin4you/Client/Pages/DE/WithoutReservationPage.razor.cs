@@ -28,9 +28,15 @@ namespace checkin4you.Client.Pages.DE
 
         ReservationDTO? Reservation { get; set; }
 
+        ReservationDTO? CheckedInReservation { get; set; }
+
         List<PossibleReservation>? PossibleReservations { get; set; }
 
+        List<PossibleReservation>? CheckedInPossibleReservations { get; set; }
+
         private List<string>? ResTexts { get; set; }
+
+        private List<string>? CheckedInResTexts { get; set; }
 
         private bool ReservationsLoaded { get; set; } = false;
 
@@ -46,8 +52,10 @@ namespace checkin4you.Client.Pages.DE
         {
             PossibleReservations = (await ReservationService.GetAllReservationsForTodayAsync()).ToList();
             var checkedInReservationIds = ReservationStateService.CheckedInReservationIds;
+            CheckedInPossibleReservations = PossibleReservations.Where(pr => checkedInReservationIds.Contains(pr.IdReservation)).ToList();
             PossibleReservations.RemoveAll(pr => checkedInReservationIds.Contains(pr.IdReservation));
             ResTexts = PossibleReservations.Select(pr => pr.ResText.ToLower()).ToList();
+            CheckedInResTexts = CheckedInPossibleReservations.Select(pr => pr.ResText.ToLower()).ToList();
         }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
@@ -59,6 +67,9 @@ namespace checkin4you.Client.Pages.DE
 
         private async Task OnGuestNameInput(string value)
         {
+            Reservation = null;
+            CheckedInReservation = null;
+
             if (value.Length > 4)
             {
                 ReservationsLoaded = false;
@@ -84,6 +95,29 @@ namespace checkin4you.Client.Pages.DE
 
                     Reservation = await ReservationService.GetReservationByIdReservationsAsync(idReservations);
                     if (!Reservation.IsComplete) Reservation = null;
+                }
+
+                var checkedInMatches = CheckedInResTexts
+                    .Where(cirt => cirt.Contains(value.ToLower()))
+                    .Distinct()
+                    .OrderByDescending(cim => Fitness(value.ToLower(), cim))
+                    .ToList();
+
+                if (checkedInMatches.Any())
+                {
+                    string idReservations = "";
+
+                    var reservationsToLoad = CheckedInPossibleReservations.Where(pr => pr.ResText.ToLower().Contains(checkedInMatches.First())).Select(pr => pr.IdReservation).ToList();
+                    
+                    foreach (var rtl in reservationsToLoad)
+                    {
+                        idReservations += rtl + "&";
+                    }
+
+                    idReservations = idReservations.Remove(idReservations.Length - 1, 1);
+
+                    CheckedInReservation = await ReservationService.GetReservationByIdReservationsAsync(idReservations);
+                    if (!CheckedInReservation.IsComplete) CheckedInReservation = null;
                 }
 
                 ShowSpinner = false;
@@ -245,6 +279,18 @@ namespace checkin4you.Client.Pages.DE
             int years = DateTime.Now.Year - guest.Birthdate.Value.Year;
             if (DateTime.Now.Month < guest.Birthdate.Value.Month || (DateTime.Now.Month == guest.Birthdate.Value.Month && DateTime.Now.Day < guest.Birthdate.Value.Day)) years--;
             return years;
+        }
+
+        static int Fitness(string individual, string target)
+        {
+            var matches = Enumerable.Range(0, Math.Min(individual.Length, target.Length))
+                             .Count(i => individual[i] == target[i]);
+            if (target.Length > individual.Length)
+            {
+                matches -= target.Length - individual.Length;
+            }
+
+            return matches; 
         }
     }
 }

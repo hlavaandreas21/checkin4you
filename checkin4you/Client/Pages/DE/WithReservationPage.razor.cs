@@ -28,6 +28,8 @@ namespace checkin4you.Client.Pages.DE
 
         ReservationDTO? Reservation { get; set; }
 
+        ReservationDTO? CheckedInReservation { get; set; }
+
         private bool ReservationsLoaded { get; set; } = false;
 
         private bool ShowSpinner { get; set; } = false;
@@ -47,7 +49,8 @@ namespace checkin4you.Client.Pages.DE
 
         private async Task OnReservationIdInput(string value)
         {
-            Reservation = new ReservationDTO();
+            Reservation = null;
+            CheckedInReservation = null;
             ReservationsLoaded = false;
 
             if (!string.IsNullOrEmpty(value) && value.Length == 10)
@@ -64,7 +67,11 @@ namespace checkin4you.Client.Pages.DE
                 {
                     foreach (var idReservation in Reservation.Idreservations)
                     {
-                        if (checkedInReservationIds.Contains(idReservation)) Reservation = null;
+                        if (checkedInReservationIds.Contains(idReservation))
+                        {
+                            CheckedInReservation = Reservation;
+                            Reservation = null;
+                        }
                     }
                 }
 
