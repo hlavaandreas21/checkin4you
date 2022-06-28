@@ -1,4 +1,18 @@
 ﻿.bg {
     background-image: url(images/background_home.jpg);
-    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+.logo {
+    width: 700px;
+    height: 409px;
+}
+
+@media only screen and (max-height: 750px) {
+    .logo {
+        width: 525px;
+        height: 306px;
+    }
 }
