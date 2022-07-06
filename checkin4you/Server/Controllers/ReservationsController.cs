@@ -18,11 +18,14 @@ namespace checkin4you.Server.Controllers
 
         [HttpGet("[action]")]
         public List<string> GetCheckedInReservationIds()
-        {
+        {          
+            using StreamWriter w = System.IO.File.AppendText("checkedinReservations.json");
+            w.Close();
+            
             using StreamReader file = System.IO.File.OpenText("checkedInReservations.json");
             JsonSerializer serializer = new();
-
             List<string> checkedInReservationIds = (List<string>)serializer.Deserialize(file, typeof(List<string>));
+            file.Close();
 
             if (checkedInReservationIds == null)
             {
@@ -277,7 +280,7 @@ namespace checkin4you.Server.Controllers
         public void PersistCheckedInReservationIds([FromBody] List<string> checkedInReservationIds)
         {
             string json = JsonConvert.SerializeObject(checkedInReservationIds);
-            System.IO.File.WriteAllText("checkedInReservations.json", json);
+            System.IO.File.AppendAllText("checkedinReservations.json", json);
         }
     }
 }
