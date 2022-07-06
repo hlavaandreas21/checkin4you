@@ -44,11 +44,6 @@ namespace checkin4you.Server.Controllers
             //today = new(2021, 11, 3);
 #endif
 
-
-
-
-
-
             var tblReservations = _context.TblReservations
                 .Where(r => r.ArrivalDate.Value.DayOfYear == today.DayOfYear &&
                             r.ArrivalDate.Value.Year == today.Year &&

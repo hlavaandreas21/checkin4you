@@ -34,7 +34,7 @@ namespace checkin4you.Client.Services.States
             {
                 return;
             }
-            else if (uri == Config.GetValue<string>("BaseUri"))
+            else if (uri == NavigationManager.BaseUri)
             {
                 var newUri = uri + CurrentLang;
                 NavigationManager.NavigateTo(newUri);
