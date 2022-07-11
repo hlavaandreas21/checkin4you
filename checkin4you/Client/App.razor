@@ -1,5 +1,6 @@
 ﻿@using checkin4you.Client.Services.States
-@inject HttpClient httpClient
+@inject ILogger<App> _logger
+@inject HttpClient _httpClient
 @inject ReservationStateService ReservationStateService
 @inject LanguageStateService LanguageStateService
 
@@ -19,7 +20,18 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        ReservationStateService.SetCheckedInReservationIds(await httpClient.GetFromJsonAsync<List<string>>("api/reservations/GetCheckedInReservationIds"));
+        try
+        {
+            var checkedInReservationIds = await _httpClient.GetFromJsonAsync<List<string>>("api/reservations/GetCheckedInReservationIds");
+            _logger.LogInformation("[App] Successfully retrieved CheckedInReservationIds.", checkedInReservationIds);
+
+            ReservationStateService.SetCheckedInReservationIds(checkedInReservationIds);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("[App] Error while retrieving CheckedInReservationIds.", ex.Message);
+        }
+
         LanguageStateService.SetCurrentLang(LanguageStateService.DefaultLang);
     }
 }
