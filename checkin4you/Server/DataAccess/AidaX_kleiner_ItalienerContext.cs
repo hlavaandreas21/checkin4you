@@ -28,7 +28,7 @@ namespace checkin4you.Server.DataAccess
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=AidaX_kleiner_Italiener;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Password=cmsuhwq0;User ID=sa;Server=TERM001\\XSS;Database=AidaX_kleiner_Italiener;Trusted_Connection=True;");
             }
         }
 
