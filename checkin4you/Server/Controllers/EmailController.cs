@@ -8,28 +8,30 @@ namespace checkin4you.Server.Controllers
     [Route("api/[controller]")]
     public class EmailController : Controller
     {
+        private readonly ILogger<EmailController> _logger;
 
-        private readonly IMailService mailService;
-        public EmailController(IMailService mailService)
+        private readonly IMailService _mailService;
+
+        public EmailController(
+            ILogger<EmailController> logger,
+            IMailService mailService)
         {
-            this.mailService = mailService;
+            _logger = logger;
+            _mailService = mailService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Send([FromBody] MailRequest request)
+        public async void Send([FromBody] MailRequest request)
         {
             try
             {
-                await mailService.SendEmailAsync(request);
-                return Ok();
+                await _mailService.SendEmailAsync(request);
+                _logger.LogInformation("[EmailController] Successfully sent confirmation E-Mail.", request);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.LogError("[EmailController] Error while trying to send confirmation E-Mail", ex.Message);
             }
-
         }
-
-
     }
 }
