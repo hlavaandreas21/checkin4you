@@ -145,7 +145,7 @@ namespace checkin4you.Client.Pages.EN
                     Body = GenerateEmailBody(Reservation)
                 };
 
-                HttpClient.PostAsJsonAsync<MailRequest>("api/Email", mailRequest);
+                HttpClient.PostAsJsonAsync<MailRequest>("api/email", mailRequest);
 
                 NavigationManager.NavigateTo("/de/checkedIn");
             }
