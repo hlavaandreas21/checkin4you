@@ -70,7 +70,7 @@ namespace checkin4you.Client.Pages.EN
             Reservation = null;
             CheckedInReservation = null;
 
-            if (value.Length > 4)
+            if (value.Length > 2)
             {
                 ReservationsLoaded = false;
 
