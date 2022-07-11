@@ -51,7 +51,7 @@ namespace checkin4you.Server.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("[ReservationsController] Error while retrieving CheckedInReservationIds.", ex.Message);
-                return new List<string>();
+                return new();
             }
         }
 
@@ -345,8 +345,6 @@ namespace checkin4you.Server.Controllers
             {
                 _logger.LogError("[ReservationsController] Error while logging CheckedInReservationIds.", ex.Message);
             }
-
-            
         }
     }
 }
