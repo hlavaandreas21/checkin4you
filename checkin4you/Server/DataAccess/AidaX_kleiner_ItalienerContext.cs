@@ -28,7 +28,7 @@ namespace checkin4you.Server.DataAccess
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Password=cmsuhwq0;User ID=sa;Server=TERM001\\XSS;Database=AidaX_kleiner_Italiener;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=TERM001\\XSS;Initial Catalog=AidaX_kleiner_Italiener;Persist Security Info=True;User ID=sa;Password=cmsuhwq0");
             }
         }
 
