@@ -9,17 +9,23 @@ namespace checkin4you.Client.Services.States
 
         public string DefaultLang { get; private set; } = "de";
 
+        private readonly IConfiguration Config;
+
         public string PreviousLang { get; private set; } = "";
         public string CurrentLang { get; private set; } = "";
 
-        public LanguageStateService(NavigationManager nav)
+        public LanguageStateService(
+            NavigationManager nav,
+            IConfiguration defaultConfig)
         {
             NavigationManager = nav;
+            Config = defaultConfig;
         }
 
         public void SetCurrentLang(string language)
         {
             PreviousLang = CurrentLang;
+
             CurrentLang = language;
 
             var uri = NavigationManager.Uri.ToString();
@@ -28,7 +34,7 @@ namespace checkin4you.Client.Services.States
             {
                 return;
             }
-            else if (uri.Length == 24)
+            else if (uri == NavigationManager.BaseUri)
             {
                 var newUri = uri + CurrentLang;
                 NavigationManager.NavigateTo(newUri);

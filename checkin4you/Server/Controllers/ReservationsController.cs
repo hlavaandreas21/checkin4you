@@ -18,11 +18,14 @@ namespace checkin4you.Server.Controllers
 
         [HttpGet("[action]")]
         public List<string> GetCheckedInReservationIds()
-        {
+        {          
+            using StreamWriter w = System.IO.File.AppendText("checkedinReservations.json");
+            w.Close();
+            
             using StreamReader file = System.IO.File.OpenText("checkedInReservations.json");
             JsonSerializer serializer = new();
-
             List<string> checkedInReservationIds = (List<string>)serializer.Deserialize(file, typeof(List<string>));
+            file.Close();
 
             if (checkedInReservationIds == null)
             {
@@ -37,10 +40,12 @@ namespace checkin4you.Server.Controllers
         [HttpGet("today")]
         public IEnumerable<PossibleReservation> GetAllReservationsForToday()
         {
-            //DateTime today = DateTime.Today;
 
-            DateTime today = new(2021, 11, 3);
+            DateTime today = DateTime.Today;
 
+#if DEBUG
+            //today = new(2021, 11, 3);
+#endif
 
             var tblReservations = _context.TblReservations
                 .Where(r => r.ArrivalDate.Value.DayOfYear == today.DayOfYear &&
@@ -167,9 +172,11 @@ namespace checkin4you.Server.Controllers
         [HttpGet("byExternalResId/{externalReservationId}")]
         public ReservationDTO GetReservationByReservationId(string externalReservationId)
         {
-            //DateTime today = new();
+            DateTime today = DateTime.Today;
 
-            DateTime today = new(2021, 11, 3);
+#if DEBUG
+            //today = new(2021, 11, 3);
+#endif
 
             ReservationDTO reservationFinal = new()
             {
@@ -273,7 +280,7 @@ namespace checkin4you.Server.Controllers
         public void PersistCheckedInReservationIds([FromBody] List<string> checkedInReservationIds)
         {
             string json = JsonConvert.SerializeObject(checkedInReservationIds);
-            System.IO.File.WriteAllText("checkedInReservations.json", json);
+            System.IO.File.AppendAllText("checkedinReservations.json", json);
         }
     }
 }
