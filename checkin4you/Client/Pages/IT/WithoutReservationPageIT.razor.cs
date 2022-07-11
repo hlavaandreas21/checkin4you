@@ -161,7 +161,7 @@ namespace checkin4you.Client.Pages.IT
 
         private void Cancel()
         {
-            NavigationManager.NavigateTo("/de/home");
+            NavigationManager.NavigateTo("/it/home");
         }
 
         private void TryCheckIn()
@@ -191,7 +191,7 @@ namespace checkin4you.Client.Pages.IT
                 };
 
                 HttpClient.PostAsJsonAsync<MailRequest>("api/email", mailRequest);
-                NavigationManager.NavigateTo("/de/checkedIn");
+                NavigationManager.NavigateTo("/it/checkedIn");
             }
             else ShowInvalidMessage = true;
         }
