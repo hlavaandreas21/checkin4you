@@ -10,8 +10,10 @@
                 {
                     <h3>Ihr Zimmer ist:</h3>
                     <div class="room-container">
-                        <div class="room">
-                            @Rooms.First()
+                        <div class="room room-single d-flex align-items-center justify-content-center">
+                            <div style="font-size: xxx-large">
+                                @Rooms.First()
+                            </div>
                         </div>
                     </div>
                 }
@@ -48,13 +50,13 @@
         <div class="w-50 ms-0 mt-0 me-4 mb-4">
             <RadzenCard class="d-flex flex-column h-100" Style="background-color: #1e1e1e; color: white">
                 <h3>Frühstückszeiten</h3>
-                <div class="small-heading mb-2">07.00 bis 11.00 Uhr</div>
+                <div class="small-heading mb-2">07.00 bis 09.30 Uhr</div>
                 <h3>Öffnungszeiten Restaurant</h3>
                 <div class="d-flex flex-column">
                     <div class="small-heading mb-1">Dienstag bis Freitag </div>
-                    <div class="text mb-1">17.00 bis 22.30 Uhr (warme Küche bis 22.00 Uhr)</div>
+                    <div class="text mb-1">17.00 bis 23.00 Uhr (warme Küche bis 22.00 Uhr)</div>
                     <div class="small-heading mb-1">Samstag</div>
-                    <div class="text mb-1">11.00 bis 14.00 Uhr und 17.00 bis 22.30 Uhr (warme Küche bis 22.00 Uhr)</div>
+                    <div class="text mb-1">11.00 bis 14.00 Uhr und 17.00 bis 23.00 Uhr (warme Küche bis 22.00 Uhr)</div>
                     <div class="small-heading mb-1">Sonn- und Feiertage</div>
                     <div class="text">11.00 bis 14.00 Uhr und 17.00 bis 22.00 Uhr (warme Küche bis 21.00 Uhr)</div>
                 </div>
