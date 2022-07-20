@@ -81,13 +81,23 @@ namespace checkin4you.Client.Pages.EN
 
                 ReservationsLoaded = true;
 
-                if (Reservation != null) DisplayNoneCssClass = "d-none";
+                if (Reservation != null)
+                {
+                    var guestsToAddCount = Reservation.GuestCount - Reservation.Guests.Count;
+
+                    for (int i = 0; i < guestsToAddCount; i++)
+                    {
+                        AddGuest();
+                    }
+
+                    DisplayNoneCssClass = "d-none";
+                }
             }
 
             await InvokeAsync(StateHasChanged);
         }
 
-        private async Task AddGuest()
+        private void AddGuest()
         {
             Reservation.Guests.Add(new()
             {
@@ -103,15 +113,6 @@ namespace checkin4you.Client.Pages.EN
                 Birthdate = null,
                 Email = ""
             });
-
-            await InvokeAsync(StateHasChanged);
-        }
-
-        private async Task RemoveGuest(GuestDTO? guest)
-        {
-            Reservation.Guests.Remove(guest);
-
-            await InvokeAsync(StateHasChanged);
         }
 
         private void Cancel()
