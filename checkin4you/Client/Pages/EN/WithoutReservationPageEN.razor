@@ -54,7 +54,7 @@
                         </div>
                     }
                                               
-                    @if(Reservation.Guests != null && Reservation.Guests.Count() > 0)
+                    @if((Reservation.Guests != null && Reservation.Guests.Count() > 0) || Reservation.GuestCount > 0)
                     {
                         <h4>Main guest</h4>
                         <div class="d-flex flex-column w-100 mb-4">
