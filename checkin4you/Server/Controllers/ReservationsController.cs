@@ -108,7 +108,8 @@ namespace checkin4you.Server.Controllers
                     ExternalResIds = new(),
                     IdRooms = new(),
                     ItemCodes = new(),
-                    Guests = new()
+                    Guests = new(),
+                    GuestCount = 0
                 };
 
                 List<string> reservationsToDeleteIds = new();
@@ -179,6 +180,21 @@ namespace checkin4you.Server.Controllers
 
                     reservationFinal.ExternalResIds = reservationFinal.ExternalResIds.Distinct().ToList();
                     reservationFinal.Guests = reservationFinal.Guests.OrderByDescending(g => g.Idguest).ToList();
+
+                    foreach (var idReservation in reservationFinal.Idreservations)
+                    {
+                        var tblReservationItems = _context.TblReservationItems
+                            .Where(r => r.Idreservation.ToString() == idReservation)
+                            .ToList();
+
+                        if (tblReservationItems.Count > 0)
+                        {
+                            foreach (var res in tblReservationItems)
+                            {
+                                reservationFinal.GuestCount += res.PersNo.Value;
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -226,7 +242,8 @@ namespace checkin4you.Server.Controllers
                     ExternalResIds = new(),
                     IdRooms = new(),
                     ItemCodes = new(),
-                    Guests = new()
+                    Guests = new(),
+                    GuestCount = 0
                 };
 
                 var tblReservationsExt = _context.TblReservationsExts
@@ -239,7 +256,7 @@ namespace checkin4you.Server.Controllers
                 {
                     foreach (var reservation in tblReservationsExt)
                     {
-                        reservationFinal.Idreservations.Add(reservation.Idreservation.ToString());
+                        reservationFinal.Idreservations.Add(reservation.Idreservation.ToString().ToLower());
                         reservationFinal.ExternalResIds.Add(externalReservationId);
 
                         var tblReservation = _context.TblReservations.SingleOrDefault(r => r.Idreservation.ToString() == reservation.Idreservation.ToString());
@@ -247,7 +264,7 @@ namespace checkin4you.Server.Controllers
                         {
                             if (tblReservation.StornoDate != null || !(tblReservation.ArrivalDate?.DayOfYear == today.DayOfYear && tblReservation.ArrivalDate.Value.Year == today.Year))
                             {
-                                reservationsToDeleteIds.Add(tblReservation.Idreservation.ToString().ToUpper());
+                                reservationsToDeleteIds.Add(tblReservation.Idreservation.ToString().ToLower());
                                 continue;
                             }
                             reservationFinal.ArrivalDate = tblReservation.ArrivalDate;
@@ -299,6 +316,21 @@ namespace checkin4you.Server.Controllers
 
                     reservationFinal.ExternalResIds = reservationFinal.ExternalResIds.Distinct().ToList();
                     reservationFinal.Guests = reservationFinal.Guests.OrderByDescending(g => g.Idguest).ToList();
+
+                    foreach (var idReservation in reservationFinal.Idreservations)
+                    {
+                        var tblReservationItems = _context.TblReservationItems
+                            .Where(r => r.Idreservation.ToString() == idReservation)
+                            .ToList();
+
+                        if (tblReservationItems.Count > 0)
+                        {
+                            foreach (var res in tblReservationItems)
+                            {
+                                reservationFinal.GuestCount += res.PersNo.Value;
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
