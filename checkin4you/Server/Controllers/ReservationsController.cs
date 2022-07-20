@@ -162,11 +162,6 @@ namespace checkin4you.Server.Controllers
                                     Email = guest.Email
                                 });
                             }
-
-                            if (reservationFinal.Guests.Count < 1)
-                            {
-                                reservationFinal.Guests.Add(new());
-                            }
                         }
                     }
 
@@ -206,7 +201,7 @@ namespace checkin4you.Server.Controllers
                     reservationFinal.DepartureDate != null &&
                     reservationFinal.IdRooms != null && reservationFinal.IdRooms.Any() &&
                     reservationFinal.ItemCodes != null && reservationFinal.ItemCodes.Any() &&
-                    reservationFinal.Guests != null && reservationFinal.Guests.Any())
+                    reservationFinal.GuestCount > 0)
                 {
                     reservationFinal.IsComplete = true;
                 }
@@ -298,11 +293,6 @@ namespace checkin4you.Server.Controllers
                                     Email = _context.TblGuests2s.SingleOrDefault(em => em.Idguest == guest.Idguest).Email
                                 });
                             }
-
-                            if (reservationFinal.Guests.Count < 1)
-                            {
-                                reservationFinal.Guests.Add(new());
-                            }
                         }
                     }
 
@@ -343,7 +333,7 @@ namespace checkin4you.Server.Controllers
                     reservationFinal.DepartureDate != null &&
                     reservationFinal.IdRooms != null && reservationFinal.IdRooms.Any() &&
                     reservationFinal.ItemCodes != null && reservationFinal.ItemCodes.Any() &&
-                    reservationFinal.Guests != null && reservationFinal.Guests.Any())
+                    reservationFinal.GuestCount > 0)
                 {
                     reservationFinal.IsComplete = true;
                 }
